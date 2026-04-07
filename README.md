@@ -36,7 +36,7 @@ The two levels are **connected** — your quiz answers in Level 1 shape the reci
 | Layer | Tool |
 |---|---|
 | Frontend | Next.js (React) + Tailwind CSS |
-| AI | Claude API (quiz logic, recipe matching, cooking game rating) |
+| AI | Claude API/Google AI Studio,etc (quiz logic, recipe matching, cooking game rating) |
 | Gesture Recognition | MediaPipe Hands (stretch goal) |
 | Backend & DB | Supabase |
 | Hosting | Vercel |
@@ -47,7 +47,7 @@ The two levels are **connected** — your quiz answers in Level 1 shape the reci
 
 | Role | Name |
 |---|---|
-| **Proposer** | [Your Name] |
+| **Proposer** | Suzy Hong |
 | **Developer** | Su hyun Jung |
 
 ---
@@ -56,9 +56,9 @@ The two levels are **connected** — your quiz answers in Level 1 shape the reci
 
 | Check-In | Target Date | Expected Progress |
 |---|---|---|
-| **Check-in 1** | Week [X] | Scaffolding complete and deployed on Vercel. Landing page with navigation live. Quiz UI built — 3 stages clickable with placeholder questions. |
-| **Check-in 2** | Week [X] | Bug Quiz fully functional with Claude API (3 stages → persona result + 3 personalized recipe cards). Cultural World Map implemented. |
-| **Check-in 3** | Week [X] | Recipe Library complete with personalized sorting, filters, and detail views. Full polish pass (animations, transitions, visual consistency). All P0 + P1 issues closed. Stretch: gesture cooking game if time allows. |
+| **Check-in 1** | Week 4 | Scaffolding complete and deployed on Vercel. Landing page with navigation live. Quiz UI built — 3 stages clickable with placeholder questions. |
+| **Check-in 2** | Week 6 | Bug Quiz fully functional with Claude API (3 stages → persona result + 3 personalized recipe cards). Cultural World Map implemented. |
+| **Check-in 3** | Week 9 | Recipe Library complete with personalized sorting, filters, and detail views. Full polish pass (animations, transitions, visual consistency). All P0 + P1 issues closed. Stretch: gesture cooking game if time allows. |
 
 > Dates to be filled in after confirming with developer.
 
