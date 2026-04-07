@@ -9,7 +9,7 @@
 | **Proposer** | Suzy Hong |
 | **Developer** | Su hyun Jung |
 | **Stack** | Next.js + Supabase + Tailwind CSS, hosted on Vercel |
-| **AI Integrations** | Claude API (quiz logic, recipe matching, cooking game rating) / MediaPipe Hands (gesture game — stretch) |
+| **AI Integrations** | Claude API, Google AI Studio, etc (quiz logic, recipe matching, cooking game rating) / MediaPipe Hands (gesture game — stretch) |
 
 ---
 
@@ -23,18 +23,16 @@ BugBite is a gamified web app that helps users overcome their fear of insects an
 
 ## Development Fee Breakdown
 
-Total agreed fee: **20 GIX Bucks**
-
-MVP fee paid upfront: **72 GIX Bucks** (covers P0 features below)
+Total agreed fee: **30 GIX Bucks**
 
 | Feature | Priority | Est. Difficulty | Fee Portion |
 |---|---|---|---|
-| Project scaffolding + landing page | P0 | Easy | 2 |
-| Bug Quiz — 3-stage interactive flow | P0 | Medium | 20 |
-| Quiz → Recipe matching logic | P0 | Medium | 5 |
-| Cultural World Map | P1 | Medium | 10 |
-| Bug Kitchen — Recipe Library with personalized recommendations | P1 | Medium | 15 |
-| Bug Kitchen — Gesture Cooking Game + AI Rating | P2 (stretch) | Hard | 25 |
+| Project scaffolding + landing page | P0 | Easy | 1 |
+| Bug Quiz — 3-stage interactive flow | P0 | Medium | 5 |
+| Quiz → Recipe matching logic | P0 | Medium | 1 |
+| Cultural World Map | P1 | Medium | 5 |
+| Bug Kitchen — Recipe Library with personalized recommendations | P1 | Medium | 8 |
+| Bug Kitchen — Gesture Cooking Game + AI Rating | P2 (stretch) | Hard | 10 |
 
 > Fee for P2 stretch features paid only if delivered.
 
