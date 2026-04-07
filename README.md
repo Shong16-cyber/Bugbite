@@ -60,7 +60,7 @@ The two levels are **connected** — your quiz answers in Level 1 shape the reci
 | **Check-in 2** | Week 6 | Bug Quiz fully functional with Claude API (3 stages → persona result + 3 personalized recipe cards). Cultural World Map implemented. |
 | **Check-in 3** | Week 9 | Recipe Library complete with personalized sorting, filters, and detail views. Full polish pass (animations, transitions, visual consistency). All P0 + P1 issues closed. Stretch: gesture cooking game if time allows. |
 
-> Dates to be filled in after confirming with developer.
+> Dates to be updated in after confirming with developer.
 
 ---
 
