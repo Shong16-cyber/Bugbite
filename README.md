@@ -1,70 +1,38 @@
-# 🐛 BugBite — From Fear to Fork
+# BugBite - From Fear to Fork
 
-A playful, AI-powered web app that guides users from insect-phobia to insect-foodie through a two-level gamified journey.
+A gamified web app that guides users from insect-phobia to insect-foodie through a two-level journey.
 
----
+**Emotional arc:** Fear -> Fascination -> Familiarity -> Food
 
-## The Problem
+## Stack
 
-Insects are one of the most sustainable protein sources on the planet, but fear and disgust prevent most people from even learning about them. BugBite bridges that gap — not with lectures, but with play.
+- [Next.js 15](https://nextjs.org) (App Router + TypeScript)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Supabase](https://supabase.com)
+- [Vercel](https://vercel.com) (hosting)
 
-**Emotional arc:** Fear → Fascination → Familiarity → Food
+## Getting Started
 
----
+1. Clone the repo
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up environment variables:
+   ```bash
+   cp .env.local.example .env.local
+   # Fill in your Supabase keys
+   ```
+4. Run the dev server:
+   ```bash
+   npm run dev
+   ```
 
-## How It Works
-
-The two levels are **connected** — your quiz answers in Level 1 shape the recipes you see in Level 2.
-
-### 🌱 Level 1 — Bug Discovery
-
-- **3-Stage Bug Quiz**
-  - Stage 1: How scared are you? What bug features creep you out? → determines food form (e.g., hates legs → powder-based recipes)
-  - Stage 2: What flavors and textures do you like? How lazy are you? → determines cooking style and difficulty
-  - Stage 3: Get matched with your "spirit bug" persona + a preview of your top 3 personalized recipes
-- **Cultural World Map** — Explore insect dishes from 8–10 cultures around the world
-
-### 🍳 Level 2 — Bug Kitchen
-
-- **Personalized Recipe Library** — Cartoon-style recipes sorted by your quiz profile. Someone who's squeamish + likes crunchy + is lazy sees "5-Min Roasted Cricket Crumble" first, not "Whole Scorpion Stir-Fry."
-- **Gesture Cooking Game** *(stretch goal)* — DIY an insect dish by combining ingredients with hand gestures, then get a fun AI rating on your creation
-
----
-
-## Tech Stack
-
-| Layer | Tool |
-|---|---|
-| Frontend | Next.js (React) + Tailwind CSS |
-| AI | Claude API/Google AI Studio,etc (quiz logic, recipe matching, cooking game rating) |
-| Gesture Recognition | MediaPipe Hands (stretch goal) |
-| Backend & DB | Supabase |
-| Hosting | Vercel |
-
----
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
 ## Team
 
 | Role | Name |
 |---|---|
-| **Proposer** | Suzy Hong |
-| **Developer** | Su hyun Jung |
-
----
-
-## Timeline & Check-In Points
-
-| Check-In | Target Date | Expected Progress |
-|---|---|---|
-| **Check-in 1** | Week 4 | Scaffolding complete and deployed on Vercel. Landing page with navigation live. Quiz UI built — 3 stages clickable with placeholder questions. |
-| **Check-in 2** | Week 6 | Bug Quiz fully functional with Claude API (3 stages → persona result + 3 personalized recipe cards). Cultural World Map implemented. |
-| **Check-in 3** | Week 9 | Recipe Library complete with personalized sorting, filters, and detail views. Full polish pass (animations, transitions, visual consistency). All P0 + P1 issues closed. Stretch: gesture cooking game if time allows. |
-
-> Dates to be updated in after confirming with developer.
-
----
-
-## Links
-
-- [SPEC.md](./SPEC.md) — User stories, acceptance criteria, fee breakdown
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — System design (to be added by developer)
+| Proposer | Suzy Hong |
+| Developer | Su hyun Jung |
