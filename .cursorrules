@@ -1,0 +1,9 @@
+- Use Next.js App Router conventions (app/ directory, not pages/)
+- Prefer server components unless interactivity is required (then use "use client")
+- Use Tailwind utility classes only (no inline styles, no CSS modules)
+- All API calls go through /api/* routes (never call Supabase or Claude directly from client components)
+- Always import Supabase from lib/supabase.ts
+- Use Framer Motion for quiz transitions and animations
+- Use next/image for all images with proper alt text
+- Always use TypeScript with proper types (no `any`)
+- Never hardcode secrets or API keys
