@@ -1,14 +1,33 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { QuizQuestion } from "@/lib/quizQuestions";
 
 type Props = {
   question: QuizQuestion;
+  initialValue?: string;
   onAnswer: (value: string) => void;
+  onBack?: () => void;
 };
 
-export default function QuizQuestionCard({ question, onAnswer }: Props) {
+export default function QuizQuestionCard({
+  question,
+  initialValue,
+  onAnswer,
+  onBack,
+}: Props) {
+  const [selected, setSelected] = useState<string | undefined>(initialValue);
+
+  // Reset selection when question changes
+  useEffect(() => {
+    setSelected(initialValue);
+  }, [question.id, initialValue]);
+
+  const handleNext = () => {
+    if (selected) onAnswer(selected);
+  };
+
   return (
     <motion.div
       key={question.id}
@@ -21,26 +40,60 @@ export default function QuizQuestionCard({ question, onAnswer }: Props) {
       <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A3A2A] tracking-tight mb-8 text-center leading-tight">
         {question.question}
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {question.options.map((option, i) => (
-          <motion.button
-            key={option.value}
-            onClick={() => onAnswer(option.value)}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.05 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="group bg-white rounded-2xl p-5 text-left transition-all hover:shadow-lg shadow-sm border-2 border-transparent hover:border-[#48BB78]"
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+        {question.options.map((option, i) => {
+          const isSelected = selected === option.value;
+          return (
+            <motion.button
+              key={option.value}
+              onClick={() => setSelected(option.value)}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className={`rounded-2xl p-5 text-left transition-all shadow-sm border-2 ${
+                isSelected
+                  ? "bg-[#48BB78] text-white border-[#48BB78] shadow-md"
+                  : "bg-white text-[#1A3A2A] border-transparent hover:border-[#48BB78]/40 hover:shadow-lg"
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                <span className="text-3xl">{option.emoji}</span>
+                <span className="font-semibold text-sm md:text-base">
+                  {option.label}
+                </span>
+              </div>
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* Navigation: Back + Next */}
+      <div className="flex justify-between items-center gap-3">
+        {onBack ? (
+          <button
+            onClick={onBack}
+            className="text-[#1A3A2A]/60 hover:text-[#1A3A2A] font-semibold px-5 py-2.5 rounded-full text-sm transition-colors"
           >
-            <div className="flex items-center gap-4">
-              <span className="text-3xl">{option.emoji}</span>
-              <span className="font-semibold text-[#1A3A2A] text-sm md:text-base">
-                {option.label}
-              </span>
-            </div>
-          </motion.button>
-        ))}
+            ← Back
+          </button>
+        ) : (
+          <span />
+        )}
+        <motion.button
+          onClick={handleNext}
+          disabled={!selected}
+          whileHover={selected ? { scale: 1.03 } : undefined}
+          whileTap={selected ? { scale: 0.97 } : undefined}
+          className={`font-bold px-8 py-3 rounded-full text-sm transition-all ${
+            selected
+              ? "bg-[#1A3A2A] hover:bg-[#48BB78] text-[#F0FFF4] shadow-sm hover:shadow-lg"
+              : "bg-[#1A3A2A]/10 text-[#1A3A2A]/30 cursor-not-allowed"
+          }`}
+        >
+          Next →
+        </motion.button>
       </div>
     </motion.div>
   );
