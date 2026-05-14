@@ -3,22 +3,31 @@
 import { motion } from "framer-motion";
 
 type Props = {
-  stage: 1 | 2;
+  stage: 1 | 2 | 3;
   onContinue: () => void;
 };
 
 const stageContent = {
   1: {
     emoji: "🫣",
-    label: "Stage 1",
+    label: "Stage 1 of 3",
     title: "How Brave Are You?",
     description: "Let's start with how you feel about bugs. No judgment — we just want to know where you're starting from.",
+    cta: "Let's go →",
   },
   2: {
     emoji: "🍽️",
-    label: "Stage 2",
+    label: "Stage 2 of 3",
     title: "What's Your Flavor?",
-    description: "Now let's talk food. Your taste preferences will shape the recipes we recommend later.",
+    description: "Now let's talk food. Your taste preferences will shape the recipes we recommend.",
+    cta: "Continue →",
+  },
+  3: {
+    emoji: "✨",
+    label: "Stage 3 of 3",
+    title: "Your Bug Persona",
+    description: "All done! Let's see which bug matches your vibe — and what you should eat first.",
+    cta: "Reveal my persona →",
   },
 };
 
@@ -51,7 +60,7 @@ export default function QuizStageIntro({ stage, onContinue }: Props) {
         whileTap={{ scale: 0.97 }}
         className="bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
       >
-        {stage === 1 ? "Let's go →" : "Continue →"}
+        {content.cta}
       </motion.button>
     </motion.div>
   );
