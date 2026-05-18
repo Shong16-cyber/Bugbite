@@ -120,86 +120,51 @@ export default function KitchenPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white border border-[#C8E2D4] rounded-2xl p-4 mb-6">
-        <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs font-semibold text-[#0D2B19]/50 uppercase tracking-wider mr-1">
-            Filter:
+      <div className="bg-white border border-[#C8E2D4] rounded-2xl px-5 py-4 mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-semibold text-[#0D2B19]/40 uppercase tracking-wider">
+            Filter
           </span>
-
-          {/* Insect */}
-          {["cricket", "mealworm", "silkworm", "ant", "grasshopper"].map((v) => (
-            <button
-              key={v}
-              onClick={() => setFilter("insect", v)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                filters.insect === v
-                  ? "bg-[#2A7D50] text-white border-[#2A7D50]"
-                  : "bg-white text-[#0D2B19]/70 border-[#C8E2D4] hover:bg-[#EEF7F2]"
-              }`}
-            >
-              {v}
-            </button>
-          ))}
-
-          <div className="w-px h-4 bg-[#0D2B19]/10 mx-1" />
-
-          {/* Difficulty */}
-          {["easy", "medium", "adventurous"].map((v) => (
-            <button
-              key={v}
-              onClick={() => setFilter("difficulty", v)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                filters.difficulty === v
-                  ? "bg-[#2A7D50] text-white border-[#2A7D50]"
-                  : "bg-white text-[#0D2B19]/70 border-[#C8E2D4] hover:bg-[#EEF7F2]"
-              }`}
-            >
-              {v}
-            </button>
-          ))}
-
-          <div className="w-px h-4 bg-[#0D2B19]/10 mx-1" />
-
-          {/* Food form */}
-          {["whole", "powder", "invisible"].map((v) => (
-            <button
-              key={v}
-              onClick={() => setFilter("foodForm", v)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                filters.foodForm === v
-                  ? "bg-[#2A7D50] text-white border-[#2A7D50]"
-                  : "bg-white text-[#0D2B19]/70 border-[#C8E2D4] hover:bg-[#EEF7F2]"
-              }`}
-            >
-              {v}
-            </button>
-          ))}
-
-          <div className="w-px h-4 bg-[#0D2B19]/10 mx-1" />
-
-          {/* Flavor */}
-          {["sweet", "savory", "spicy"].map((v) => (
-            <button
-              key={v}
-              onClick={() => setFilter("flavor", v)}
-              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all border ${
-                filters.flavor === v
-                  ? "bg-[#2A7D50] text-white border-[#2A7D50]"
-                  : "bg-white text-[#0D2B19]/70 border-[#C8E2D4] hover:bg-[#EEF7F2]"
-              }`}
-            >
-              {v}
-            </button>
-          ))}
-
           {hasFilters && (
             <button
               onClick={resetFilters}
-              className="ml-auto text-xs font-semibold text-[#0D2B19]/40 hover:text-[#0D2B19] transition-colors"
+              className="text-xs font-semibold text-[#0D2B19]/40 hover:text-[#0D2B19] transition-colors"
             >
               Clear all ×
             </button>
           )}
+        </div>
+
+        <div className="space-y-2.5">
+          {(
+            [
+              { label: "Insect", key: "insect", values: ["cricket", "mealworm", "silkworm", "ant", "grasshopper"] },
+              { label: "Difficulty", key: "difficulty", values: ["easy", "medium", "adventurous"] },
+              { label: "Form", key: "foodForm", values: ["whole", "powder", "invisible"] },
+              { label: "Flavor", key: "flavor", values: ["sweet", "savory", "spicy"] },
+            ] as const
+          ).map(({ label, key, values }) => (
+            <div key={key} className="flex items-center gap-3">
+              <span className="text-[10px] font-semibold text-[#0D2B19]/35 uppercase tracking-wider w-14 flex-shrink-0">
+                {label}
+              </span>
+              <div className="flex gap-1.5 flex-wrap">
+                {values.map((v) => (
+                  <button
+                    key={v}
+                    onClick={() => setFilter(key, v)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all border ${
+                      filters[key] === v
+                        ? "bg-[#2A7D50] text-white border-[#2A7D50]"
+                        : "bg-[#FAFFF7] text-[#0D2B19]/60 border-[#C8E2D4] hover:border-[#2A7D50]/40 hover:text-[#0D2B19]"
+                    }`}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
