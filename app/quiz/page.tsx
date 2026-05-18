@@ -142,7 +142,7 @@ export default function QuizPage() {
             className="text-center"
           >
             <div className="text-5xl mb-4">✨</div>
-            <p className="text-[#1A3A2A]/60">Finding your spirit bug...</p>
+            <p className="text-[#0D2B19]/60">Finding your spirit bug...</p>
           </motion.div>
         )}
       </AnimatePresence>

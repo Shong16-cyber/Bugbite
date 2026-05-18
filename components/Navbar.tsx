@@ -30,7 +30,7 @@ export default function Navbar() {
           height={32}
           className="transition-transform group-hover:-rotate-12"
         />
-        <span className="text-xl font-bold tracking-tight text-[#1A3A2A]">
+        <span className="text-xl font-bold tracking-tight text-[#0D2B19]">
           BugBite
         </span>
       </Link>
@@ -43,8 +43,8 @@ export default function Navbar() {
                 href={item.href}
                 className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
                   active
-                    ? "bg-[#1A3A2A] text-[#F0FFF4]"
-                    : "text-[#1A3A2A]/70 hover:text-[#1A3A2A] hover:bg-white/60"
+                    ? "bg-[#0D2B19] text-[#FAFFF7]"
+                    : "text-[#0D2B19]/70 hover:text-[#0D2B19] hover:bg-white/60"
                 }`}
               >
                 {item.label}

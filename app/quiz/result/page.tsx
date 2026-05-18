@@ -67,13 +67,13 @@ export default function QuizResultPage() {
     return (
       <main className="flex flex-col items-center justify-center min-h-[70vh] px-6 text-center">
         <div className="text-5xl mb-4">🤔</div>
-        <h1 className="text-3xl font-extrabold text-[#1A3A2A] mb-3">
+        <h1 className="text-3xl font-extrabold text-[#0D2B19] mb-3">
           No quiz data found
         </h1>
-        <p className="text-[#1A3A2A]/60 mb-8">Take the quiz first!</p>
+        <p className="text-[#0D2B19]/60 mb-8">Take the quiz first!</p>
         <Link
           href="/quiz"
-          className="bg-[#1A3A2A] hover:bg-[#48BB78] text-[#F0FFF4] font-bold px-8 py-3 rounded-full transition-colors"
+          className="bg-[#0D2B19] hover:bg-[#2A7D50] text-[#FAFFF7] font-bold px-8 py-3 rounded-full transition-colors"
         >
           Start Quiz →
         </Link>
@@ -86,9 +86,9 @@ export default function QuizResultPage() {
       {/* Shared banner */}
       {isShared && (
         <div className="bg-[#FEFCBF] rounded-2xl px-4 py-3 mb-6 text-center">
-          <p className="text-sm text-[#1A3A2A]/70">
+          <p className="text-sm text-[#0D2B19]/70">
             Someone shared their bug persona with you! 🐛{" "}
-            <Link href="/quiz" className="font-semibold text-[#1A3A2A] underline underline-offset-2">
+            <Link href="/quiz" className="font-semibold text-[#0D2B19] underline underline-offset-2">
               Take the quiz yourself →
             </Link>
           </p>
@@ -102,7 +102,7 @@ export default function QuizResultPage() {
         transition={{ duration: 0.6 }}
         className="text-center mb-10"
       >
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#48BB78] mb-3">
+        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#2A7D50] mb-3">
           Your Bug Persona
         </p>
         <motion.div
@@ -113,13 +113,13 @@ export default function QuizResultPage() {
         >
           {persona.emoji}
         </motion.div>
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A3A2A] tracking-tight mb-2">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#0D2B19] tracking-tight mb-2">
           {persona.name}
         </h1>
-        <p className="text-base text-[#48BB78] font-semibold mb-4">
+        <p className="text-base text-[#2A7D50] font-semibold mb-4">
           {persona.tagline}
         </p>
-        <p className="text-[#1A3A2A]/70 leading-relaxed text-sm max-w-md mx-auto">
+        <p className="text-[#0D2B19]/70 leading-relaxed text-sm max-w-md mx-auto">
           {persona.description}
         </p>
       </motion.section>
@@ -133,13 +133,13 @@ export default function QuizResultPage() {
       >
         <ul className="space-y-2.5 mb-4">
           {persona.funFacts.map((fact, i) => (
-            <li key={i} className="flex gap-3 text-[#1A3A2A]/80 text-sm leading-relaxed">
-              <span className="text-[#48BB78] font-bold">•</span>
+            <li key={i} className="flex gap-3 text-[#0D2B19]/80 text-sm leading-relaxed">
+              <span className="text-[#2A7D50] font-bold">•</span>
               <span>{fact}</span>
             </li>
           ))}
         </ul>
-        <p className="text-xs text-[#1A3A2A]/50 italic border-t border-[#1A3A2A]/5 pt-3">
+        <p className="text-xs text-[#0D2B19]/50 italic border-t border-[#0D2B19]/5 pt-3">
           {persona.edibility}
         </p>
       </motion.section>
@@ -151,10 +151,10 @@ export default function QuizResultPage() {
         transition={{ duration: 0.5, delay: 0.6 }}
         className="mb-10"
       >
-        <h2 className="text-2xl font-extrabold text-[#1A3A2A] tracking-tight mb-1 text-center">
+        <h2 className="text-2xl font-extrabold text-[#0D2B19] tracking-tight mb-1 text-center">
           {isShared ? "Popular Recipes" : "Your Top 3 Recipes"}
         </h2>
-        <p className="text-[#1A3A2A]/60 text-sm text-center mb-6">
+        <p className="text-[#0D2B19]/60 text-sm text-center mb-6">
           {isShared ? "Take the quiz to get your own picks" : "Hand-picked based on your quiz answers"}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -170,11 +170,11 @@ export default function QuizResultPage() {
                 className="block bg-white rounded-2xl p-4 h-full transition-all hover:-translate-y-1 hover:shadow-lg shadow-sm"
               >
                 <div className="text-3xl mb-2">{recipe.emoji}</div>
-                <h3 className="font-bold text-[#1A3A2A] mb-1.5 leading-tight text-sm">
+                <h3 className="font-bold text-[#0D2B19] mb-1.5 leading-tight text-sm">
                   {recipe.name}
                 </h3>
                 {answers && (
-                  <p className="text-[10px] text-[#48BB78] font-semibold uppercase tracking-wider">
+                  <p className="text-[10px] text-[#2A7D50] font-semibold uppercase tracking-wider">
                     {buildPickedReason(recipe, answers)}
                   </p>
                 )}
@@ -194,7 +194,7 @@ export default function QuizResultPage() {
         {!isShared && (
           <Link
             href="/kitchen"
-            className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
+            className="inline-block bg-[#0D2B19] text-[#FAFFF7] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#2A7D50] shadow-sm hover:shadow-lg"
           >
             Explore Your Bug Kitchen →
           </Link>
@@ -202,7 +202,7 @@ export default function QuizResultPage() {
         {isShared && (
           <Link
             href="/quiz"
-            className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
+            className="inline-block bg-[#0D2B19] text-[#FAFFF7] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#2A7D50] shadow-sm hover:shadow-lg"
           >
             Take the Quiz →
           </Link>
@@ -215,14 +215,14 @@ export default function QuizResultPage() {
                 sessionStorage.removeItem("bugbite_persona");
                 window.location.href = "/quiz";
               }}
-              className="bg-white border border-[#1A3A2A]/10 text-[#1A3A2A] font-semibold px-5 py-2 rounded-full hover:bg-[#1A3A2A]/5 transition-colors text-sm"
+              className="bg-white border border-[#0D2B19]/10 text-[#0D2B19] font-semibold px-5 py-2 rounded-full hover:bg-[#0D2B19]/5 transition-colors text-sm"
             >
               Retake quiz
             </button>
           )}
           <button
             onClick={handleCopyLink}
-            className="bg-white border border-[#1A3A2A]/10 text-[#1A3A2A] font-semibold px-5 py-2 rounded-full hover:bg-[#1A3A2A]/5 transition-colors text-sm"
+            className="bg-white border border-[#0D2B19]/10 text-[#0D2B19] font-semibold px-5 py-2 rounded-full hover:bg-[#0D2B19]/5 transition-colors text-sm"
           >
             {copied ? "Copied! ✓" : "Share my persona 🔗"}
           </button>
