@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { quizQuestions, type QuizAnswers } from "@/lib/quizQuestions";
@@ -24,6 +24,11 @@ export default function QuizPage() {
   const [phase, setPhase] = useState<Phase>("intro-1");
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
+
+  // Clear any stale answers from a previous session when the quiz starts
+  useEffect(() => {
+    sessionStorage.removeItem("bugbite_quiz_answers");
+  }, []);
 
   const currentQuestions = phase === "stage-1" ? stage1Questions : stage2Questions;
   const currentQuestion = currentQuestions[questionIndex];

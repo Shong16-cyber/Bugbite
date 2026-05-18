@@ -52,47 +52,44 @@ export default function QuizResultPage() {
   }
 
   return (
-    <main className="px-6 py-12 max-w-3xl mx-auto">
+    <main className="px-6 py-10 max-w-2xl mx-auto">
       {/* Persona reveal */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-12"
+        className="text-center mb-10"
       >
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#48BB78] mb-3">
           Your Bug Persona
         </p>
         <motion.div
-          className="w-28 h-28 rounded-3xl flex items-center justify-center text-7xl mb-6 mx-auto shadow-sm"
+          className="w-24 h-24 rounded-3xl flex items-center justify-center text-6xl mb-5 mx-auto shadow-sm"
           style={{ backgroundColor: persona.accentColor }}
           animate={{ rotate: [0, -5, 5, -5, 0] }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
           {persona.emoji}
         </motion.div>
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A3A2A] tracking-tight mb-3">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#1A3A2A] tracking-tight mb-2">
           {persona.name}
         </h1>
-        <p className="text-lg text-[#48BB78] font-semibold mb-6">
+        <p className="text-base text-[#48BB78] font-semibold mb-4">
           {persona.tagline}
         </p>
-        <p className="text-[#1A3A2A]/70 leading-relaxed max-w-xl mx-auto mb-8">
+        <p className="text-[#1A3A2A]/70 leading-relaxed text-sm max-w-md mx-auto">
           {persona.description}
         </p>
       </motion.section>
 
-      {/* Fun facts */}
+      {/* Fun facts + Edibility combined */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="bg-white rounded-3xl p-6 mb-6 shadow-sm"
+        className="bg-white rounded-3xl p-6 mb-10 shadow-sm"
       >
-        <h2 className="text-xs font-semibold tracking-[0.15em] uppercase text-[#48BB78] mb-4">
-          Fun Facts
-        </h2>
-        <ul className="space-y-3">
+        <ul className="space-y-2.5 mb-4">
           {persona.funFacts.map((fact, i) => (
             <li key={i} className="flex gap-3 text-[#1A3A2A]/80 text-sm leading-relaxed">
               <span className="text-[#48BB78] font-bold">•</span>
@@ -100,19 +97,7 @@ export default function QuizResultPage() {
             </li>
           ))}
         </ul>
-      </motion.section>
-
-      {/* Edibility */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
-        className="bg-white rounded-3xl p-6 mb-12 shadow-sm"
-      >
-        <h2 className="text-xs font-semibold tracking-[0.15em] uppercase text-[#48BB78] mb-3">
-          Edibility
-        </h2>
-        <p className="text-[#1A3A2A]/80 text-sm leading-relaxed">
+        <p className="text-xs text-[#1A3A2A]/50 italic border-t border-[#1A3A2A]/5 pt-3">
           {persona.edibility}
         </p>
       </motion.section>
@@ -124,13 +109,13 @@ export default function QuizResultPage() {
         transition={{ duration: 0.5, delay: 0.6 }}
         className="mb-10"
       >
-        <h2 className="text-2xl font-extrabold text-[#1A3A2A] tracking-tight mb-2 text-center">
+        <h2 className="text-2xl font-extrabold text-[#1A3A2A] tracking-tight mb-1 text-center">
           Your Top 3 Recipes
         </h2>
         <p className="text-[#1A3A2A]/60 text-sm text-center mb-6">
           Hand-picked based on your quiz answers
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {topRecipes.map((recipe, i) => (
             <motion.div
               key={recipe.id}
@@ -140,17 +125,14 @@ export default function QuizResultPage() {
             >
               <Link
                 href={`/kitchen/recipe/${recipe.id}`}
-                className="block bg-white rounded-2xl p-5 h-full transition-all hover:-translate-y-1 hover:shadow-lg shadow-sm group"
+                className="block bg-white rounded-2xl p-4 h-full transition-all hover:-translate-y-1 hover:shadow-lg shadow-sm"
               >
-                <div className="text-4xl mb-3">{recipe.emoji}</div>
-                <h3 className="font-bold text-[#1A3A2A] mb-2 leading-tight">
+                <div className="text-3xl mb-2">{recipe.emoji}</div>
+                <h3 className="font-bold text-[#1A3A2A] mb-1.5 leading-tight text-sm">
                   {recipe.name}
                 </h3>
-                <p className="text-xs text-[#48BB78] font-semibold mb-3">
+                <p className="text-[10px] text-[#48BB78] font-semibold uppercase tracking-wider">
                   {buildPickedReason(recipe, answers)}
-                </p>
-                <p className="text-xs text-[#1A3A2A]/60 leading-relaxed">
-                  {recipe.shortDesc}
                 </p>
               </Link>
             </motion.div>
@@ -167,17 +149,20 @@ export default function QuizResultPage() {
       >
         <Link
           href="/kitchen"
-          className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg mb-4"
+          className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
         >
           Explore Your Bug Kitchen →
         </Link>
         <div className="flex gap-3 justify-center mt-4">
-          <Link
-            href="/quiz"
+          <button
+            onClick={() => {
+              sessionStorage.removeItem("bugbite_quiz_answers");
+              window.location.href = "/quiz";
+            }}
             className="bg-white border border-[#1A3A2A]/10 text-[#1A3A2A] font-semibold px-5 py-2 rounded-full hover:bg-[#1A3A2A]/5 transition-colors text-sm"
           >
             Retake quiz
-          </Link>
+          </button>
           <button
             onClick={handleCopyLink}
             className="bg-white border border-[#1A3A2A]/10 text-[#1A3A2A] font-semibold px-5 py-2 rounded-full hover:bg-[#1A3A2A]/5 transition-colors text-sm"
