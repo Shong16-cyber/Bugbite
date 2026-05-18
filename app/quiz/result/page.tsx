@@ -1,31 +1,61 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { QuizAnswers } from "@/lib/quizQuestions";
-import { matchPersona, type Persona } from "@/lib/personas";
+import { matchPersona, personas, type Persona } from "@/lib/personas";
 import { getTopRecipes, buildPickedReason, type Recipe } from "@/lib/recipes";
 
 export default function QuizResultPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [answers, setAnswers] = useState<QuizAnswers | null>(null);
   const [persona, setPersona] = useState<Persona | null>(null);
   const [topRecipes, setTopRecipes] = useState<Recipe[]>([]);
   const [copied, setCopied] = useState(false);
+  const [isShared, setIsShared] = useState(false);
 
   useEffect(() => {
+    const personaParam = searchParams.get("p");
+
+    if (personaParam) {
+      // Shared link: load persona by ID, use default answers for recipe preview
+      const found = personas.find((p) => p.id === personaParam);
+      if (found) {
+        setPersona(found);
+        setIsShared(true);
+        // Use empty answers so recipes show without personalized sorting
+        setTopRecipes(getTopRecipes({}, 3));
+        return;
+      }
+    }
+
+    // Normal flow: load from sessionStorage
     const stored = sessionStorage.getItem("bugbite_quiz_answers");
     if (stored) {
       const parsed: QuizAnswers = JSON.parse(stored);
       setAnswers(parsed);
-      setPersona(matchPersona(parsed));
+      const matched = matchPersona(parsed);
+      setPersona(matched);
       setTopRecipes(getTopRecipes(parsed, 3));
+      // Save persona to sessionStorage for Kitchen banner
+      sessionStorage.setItem("bugbite_persona", JSON.stringify({
+        id: matched.id,
+        name: matched.name,
+        emoji: matched.emoji,
+        tagline: matched.tagline,
+        accentColor: matched.accentColor,
+      }));
     }
-  }, []);
+  }, [searchParams]);
 
   const handleCopyLink = async () => {
+    if (!persona) return;
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      const url = `${window.location.origin}/quiz/result?p=${persona.id}`;
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -33,7 +63,7 @@ export default function QuizResultPage() {
     }
   };
 
-  if (!answers || !persona) {
+  if (!persona) {
     return (
       <main className="flex flex-col items-center justify-center min-h-[70vh] px-6 text-center">
         <div className="text-5xl mb-4">🤔</div>
@@ -53,6 +83,18 @@ export default function QuizResultPage() {
 
   return (
     <main className="px-6 py-10 max-w-2xl mx-auto">
+      {/* Shared banner */}
+      {isShared && (
+        <div className="bg-[#FEFCBF] rounded-2xl px-4 py-3 mb-6 text-center">
+          <p className="text-sm text-[#1A3A2A]/70">
+            Someone shared their bug persona with you! 🐛{" "}
+            <Link href="/quiz" className="font-semibold text-[#1A3A2A] underline underline-offset-2">
+              Take the quiz yourself →
+            </Link>
+          </p>
+        </div>
+      )}
+
       {/* Persona reveal */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
@@ -82,7 +124,7 @@ export default function QuizResultPage() {
         </p>
       </motion.section>
 
-      {/* Fun facts + Edibility combined */}
+      {/* Fun facts + Edibility */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -110,10 +152,10 @@ export default function QuizResultPage() {
         className="mb-10"
       >
         <h2 className="text-2xl font-extrabold text-[#1A3A2A] tracking-tight mb-1 text-center">
-          Your Top 3 Recipes
+          {isShared ? "Popular Recipes" : "Your Top 3 Recipes"}
         </h2>
         <p className="text-[#1A3A2A]/60 text-sm text-center mb-6">
-          Hand-picked based on your quiz answers
+          {isShared ? "Take the quiz to get your own picks" : "Hand-picked based on your quiz answers"}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {topRecipes.map((recipe, i) => (
@@ -131,9 +173,11 @@ export default function QuizResultPage() {
                 <h3 className="font-bold text-[#1A3A2A] mb-1.5 leading-tight text-sm">
                   {recipe.name}
                 </h3>
-                <p className="text-[10px] text-[#48BB78] font-semibold uppercase tracking-wider">
-                  {buildPickedReason(recipe, answers)}
-                </p>
+                {answers && (
+                  <p className="text-[10px] text-[#48BB78] font-semibold uppercase tracking-wider">
+                    {buildPickedReason(recipe, answers)}
+                  </p>
+                )}
               </Link>
             </motion.div>
           ))}
@@ -147,27 +191,40 @@ export default function QuizResultPage() {
         transition={{ delay: 1.0 }}
         className="text-center"
       >
-        <Link
-          href="/kitchen"
-          className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
-        >
-          Explore Your Bug Kitchen →
-        </Link>
-        <div className="flex gap-3 justify-center mt-4">
-          <button
-            onClick={() => {
-              sessionStorage.removeItem("bugbite_quiz_answers");
-              window.location.href = "/quiz";
-            }}
-            className="bg-white border border-[#1A3A2A]/10 text-[#1A3A2A] font-semibold px-5 py-2 rounded-full hover:bg-[#1A3A2A]/5 transition-colors text-sm"
+        {!isShared && (
+          <Link
+            href="/kitchen"
+            className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
           >
-            Retake quiz
-          </button>
+            Explore Your Bug Kitchen →
+          </Link>
+        )}
+        {isShared && (
+          <Link
+            href="/quiz"
+            className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-colors hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
+          >
+            Take the Quiz →
+          </Link>
+        )}
+        <div className="flex gap-3 justify-center mt-4">
+          {!isShared && (
+            <button
+              onClick={() => {
+                sessionStorage.removeItem("bugbite_quiz_answers");
+                sessionStorage.removeItem("bugbite_persona");
+                window.location.href = "/quiz";
+              }}
+              className="bg-white border border-[#1A3A2A]/10 text-[#1A3A2A] font-semibold px-5 py-2 rounded-full hover:bg-[#1A3A2A]/5 transition-colors text-sm"
+            >
+              Retake quiz
+            </button>
+          )}
           <button
             onClick={handleCopyLink}
             className="bg-white border border-[#1A3A2A]/10 text-[#1A3A2A] font-semibold px-5 py-2 rounded-full hover:bg-[#1A3A2A]/5 transition-colors text-sm"
           >
-            {copied ? "Copied! ✓" : "Copy link"}
+            {copied ? "Copied! ✓" : "Share my persona 🔗"}
           </button>
         </div>
       </motion.section>

@@ -25,9 +25,10 @@ export default function QuizPage() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
 
-  // Clear any stale answers from a previous session when the quiz starts
+  // Clear any stale answers and persona from a previous session when the quiz starts
   useEffect(() => {
     sessionStorage.removeItem("bugbite_quiz_answers");
+    sessionStorage.removeItem("bugbite_persona");
   }, []);
 
   const currentQuestions = phase === "stage-1" ? stage1Questions : stage2Questions;
