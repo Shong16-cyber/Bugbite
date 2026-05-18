@@ -20,6 +20,9 @@ export default function MapPage() {
   const [mapCenter, setMapCenter] = useState<[number, number]>([20, 10]);
   const [mapZoom, setMapZoom] = useState(1);
 
+  const MIN_ZOOM = 1;
+  const MAX_ZOOM = 8;
+
   const openPin = (pin: MapPin) => {
     setSelectedPin(pin);
     setMapCenter(pin.coordinates);
@@ -28,6 +31,13 @@ export default function MapPage() {
 
   const closePin = () => {
     setSelectedPin(null);
+    setMapCenter([20, 10]);
+    setMapZoom(1);
+  };
+
+  const zoomIn = () => setMapZoom((z) => Math.min(z * 2, MAX_ZOOM));
+  const zoomOut = () => setMapZoom((z) => Math.max(z / 2, MIN_ZOOM));
+  const resetZoom = () => {
     setMapCenter([20, 10]);
     setMapZoom(1);
   };
@@ -129,8 +139,44 @@ export default function MapPage() {
                 ))}
               </ZoomableGroup>
             </ComposableMap>
+            {/* Zoom controls */}
+            <div className="absolute bottom-8 right-4 flex flex-col gap-1">
+              <motion.button
+                onClick={zoomIn}
+                disabled={mapZoom >= MAX_ZOOM}
+                whileTap={{ scale: 0.9 }}
+                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-lg font-bold hover:bg-[#EEF7F2] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                aria-label="Zoom in"
+              >
+                +
+              </motion.button>
+              <motion.button
+                onClick={zoomOut}
+                disabled={mapZoom <= MIN_ZOOM}
+                whileTap={{ scale: 0.9 }}
+                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-lg font-bold hover:bg-[#EEF7F2] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                aria-label="Zoom out"
+              >
+                −
+              </motion.button>
+              {mapZoom > 1 && (
+                <motion.button
+                  onClick={resetZoom}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-[10px] font-semibold hover:bg-[#EEF7F2] transition-colors"
+                  aria-label="Reset zoom"
+                >
+                  ⌂
+                </motion.button>
+              )}
+            </div>
+
             <p className="text-[10px] text-[#0D2B19]/30 text-center py-2">
-              Scroll to zoom · Drag to pan · Tap a pin to explore
+              <span className="hidden sm:inline">Scroll to zoom · Drag to pan · </span>
+              Tap a pin to explore
             </p>
           </>
         )}
