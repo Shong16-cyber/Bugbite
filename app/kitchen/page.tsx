@@ -97,9 +97,6 @@ export default function KitchenPage() {
 
       {/* Header */}
       <div className="mb-8">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#48BB78] mb-2">
-          Level 2
-        </p>
         <h1 className="text-4xl font-extrabold text-[#1A3A2A] tracking-tight mb-2">
           Bug Kitchen 🍳
         </h1>
