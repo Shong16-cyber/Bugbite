@@ -24,7 +24,7 @@ const features = [
     title: "Bug Kitchen",
     description: "Cook recipes tailored to your taste — from cricket flour to whole roasted.",
     href: "/kitchen",
-    accent: "bg-white",
+    accent: "bg-[#FFF0E8]",
   },
 ];
 
@@ -96,7 +96,7 @@ export default function Home() {
                 className="group block bg-white border border-[#C8E2D4] rounded-2xl overflow-hidden h-full transition-all hover:-translate-y-1 hover:shadow-md"
               >
                 {/* Illustration area */}
-                <div className="flex items-center justify-center bg-[#FAFFF7] h-36 px-8 py-4">
+                <div className={`flex items-center justify-center ${feature.accent} h-36 px-8 py-4`}>
                   <Image
                     src={feature.icon}
                     alt={feature.title}
@@ -113,7 +113,7 @@ export default function Home() {
                   <p className="text-[#0D2B19]/60 leading-relaxed text-sm">
                     {feature.description}
                   </p>
-                  <div className="mt-5 text-sm font-semibold text-[#2A7D50] opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="mt-5 text-sm font-semibold text-[#2A7D50] opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     Explore →
                   </div>
                 </div>

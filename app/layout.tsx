@@ -44,7 +44,9 @@ export default function RootLayout({
         className={`${dmSans.variable} ${fraunces.variable} ${jetbrainsMono.variable} min-h-screen bg-[#FAFFF7] text-[#0D2B19]`}
         style={{ fontFamily: "'DM Sans', system-ui, sans-serif" }}
       >
-        <Navbar />
+        <header className="sticky top-0 z-40 bg-[#FAFFF7]/90 backdrop-blur-md border-b border-[#C8E2D4]">
+          <Navbar />
+        </header>
         {children}
       </body>
     </html>
