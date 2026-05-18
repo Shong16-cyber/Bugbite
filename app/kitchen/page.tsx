@@ -188,7 +188,7 @@ export default function KitchenPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15 }}
-              className="absolute top-full left-0 mt-2 z-30 bg-white border border-[#C8E2D4] rounded-2xl shadow-lg p-4 min-w-[280px]"
+              className="absolute top-full left-0 mt-2 z-50 bg-white border border-[#C8E2D4] rounded-2xl shadow-lg p-4 min-w-[280px]"
             >
               <div className="space-y-3">
                 {(
