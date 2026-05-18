@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -37,12 +37,24 @@ export default function KitchenPage() {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string> | null>(null);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [persona, setPersona] = useState<{ name: string; emoji: string; tagline: string; accentColor: string } | null>(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("bugbite_quiz_answers");
     if (stored) setQuizAnswers(JSON.parse(stored));
     const storedPersona = sessionStorage.getItem("bugbite_persona");
     if (storedPersona) setPersona(JSON.parse(storedPersona));
+  }, []);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
+        setFilterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
   const sorted = useMemo(() => getSortedRecipes(quizAnswers), [quizAnswers]);
@@ -120,52 +132,98 @@ export default function KitchenPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white border border-[#C8E2D4] rounded-2xl px-5 py-4 mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-semibold text-[#0D2B19]/40 uppercase tracking-wider">
+      <div ref={filterRef} className="relative mb-6">
+        {/* Trigger row */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            onClick={() => setFilterOpen((o) => !o)}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-semibold border transition-all ${
+              filterOpen
+                ? "bg-[#0D2B19] text-white border-[#0D2B19]"
+                : "bg-white text-[#0D2B19] border-[#C8E2D4] hover:border-[#0D2B19]/30"
+            }`}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0">
+              <path d="M1 3h12M3 7h8M5 11h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
             Filter
-          </span>
+            {hasFilters && (
+              <span className={`text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center ${
+                filterOpen ? "bg-white text-[#0D2B19]" : "bg-[#2A7D50] text-white"
+              }`}>
+                {Object.values(filters).filter(Boolean).length}
+              </span>
+            )}
+          </button>
+
+          {/* Active filter chips */}
+          {Object.entries(filters).map(([key, val]) =>
+            val ? (
+              <button
+                key={key}
+                onClick={() => setFilter(key as keyof Filters, val)}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[#2A7D50]/10 text-[#2A7D50] border border-[#2A7D50]/20 hover:bg-[#2A7D50]/20 transition-colors"
+              >
+                {val}
+                <span className="text-[#2A7D50]/60 text-xs leading-none">×</span>
+              </button>
+            ) : null
+          )}
+
           {hasFilters && (
             <button
               onClick={resetFilters}
-              className="text-xs font-semibold text-[#0D2B19]/40 hover:text-[#0D2B19] transition-colors"
+              className="text-xs font-medium text-[#0D2B19]/40 hover:text-[#0D2B19] transition-colors"
             >
-              Clear all ×
+              Clear all
             </button>
           )}
         </div>
 
-        <div className="space-y-2.5">
-          {(
-            [
-              { label: "Insect", key: "insect", values: ["cricket", "mealworm", "silkworm", "ant", "grasshopper"] },
-              { label: "Difficulty", key: "difficulty", values: ["easy", "medium", "adventurous"] },
-              { label: "Form", key: "foodForm", values: ["whole", "powder", "invisible"] },
-              { label: "Flavor", key: "flavor", values: ["sweet", "savory", "spicy"] },
-            ] as const
-          ).map(({ label, key, values }) => (
-            <div key={key} className="flex items-center gap-3">
-              <span className="text-[10px] font-semibold text-[#0D2B19]/35 uppercase tracking-wider w-14 flex-shrink-0">
-                {label}
-              </span>
-              <div className="flex gap-1.5 flex-wrap">
-                {values.map((v) => (
-                  <button
-                    key={v}
-                    onClick={() => setFilter(key, v)}
-                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all border ${
-                      filters[key] === v
-                        ? "bg-[#2A7D50] text-white border-[#2A7D50]"
-                        : "bg-[#FAFFF7] text-[#0D2B19]/60 border-[#C8E2D4] hover:border-[#2A7D50]/40 hover:text-[#0D2B19]"
-                    }`}
-                  >
-                    {v}
-                  </button>
+        {/* Dropdown */}
+        <AnimatePresence>
+          {filterOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.15 }}
+              className="absolute top-full left-0 mt-2 z-30 bg-white border border-[#C8E2D4] rounded-2xl shadow-lg p-4 min-w-[280px]"
+            >
+              <div className="space-y-3">
+                {(
+                  [
+                    { label: "Insect", key: "insect", values: ["cricket", "mealworm", "silkworm", "ant", "grasshopper"] },
+                    { label: "Difficulty", key: "difficulty", values: ["easy", "medium", "adventurous"] },
+                    { label: "Form", key: "foodForm", values: ["whole", "powder", "invisible"] },
+                    { label: "Flavor", key: "flavor", values: ["sweet", "savory", "spicy"] },
+                  ] as const
+                ).map(({ label, key, values }) => (
+                  <div key={key}>
+                    <p className="text-[10px] font-bold text-[#0D2B19]/40 uppercase tracking-wider mb-1.5">
+                      {label}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {values.map((v) => (
+                        <button
+                          key={v}
+                          onClick={() => setFilter(key, v)}
+                          className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all border ${
+                            filters[key] === v
+                              ? "bg-[#2A7D50] text-white border-[#2A7D50]"
+                              : "bg-white text-[#0D2B19]/60 border-[#C8E2D4] hover:border-[#2A7D50]/50 hover:text-[#0D2B19]"
+                          }`}
+                        >
+                          {v}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
-            </div>
-          ))}
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Recipe Grid */}
