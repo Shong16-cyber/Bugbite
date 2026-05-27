@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { QuizAnswers } from "@/lib/quizQuestions";
@@ -8,12 +9,29 @@ import { matchPersona, type Persona } from "@/lib/personas";
 import { getTopRecipes, buildPickedReason, type Recipe } from "@/lib/recipes";
 
 export default function QuizResultPage() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [answers, setAnswers] = useState<QuizAnswers | null>(null);
   const [persona, setPersona] = useState<Persona | null>(null);
   const [topRecipes, setTopRecipes] = useState<Recipe[]>([]);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    const personaParam = searchParams.get("p");
+
+    if (personaParam) {
+      // Shared link: load persona by ID, use default answers for recipe preview
+      const found = personas.find((p) => p.id === personaParam);
+      if (found) {
+        setPersona(found);
+        setIsShared(true);
+        // Use empty answers so recipes show without personalized sorting
+        setTopRecipes(getTopRecipes({}, 3));
+        return;
+      }
+    }
+
+    // Normal flow: load from sessionStorage
     const stored = sessionStorage.getItem("bugbite_quiz_answers");
     if (stored) {
       const parsed: QuizAnswers = JSON.parse(stored);
@@ -21,7 +39,7 @@ export default function QuizResultPage() {
       setPersona(matchPersona(parsed));
       setTopRecipes(getTopRecipes(parsed, 3));
     }
-  }, []);
+  };
 
   const handleCopyLink = async () => {
     try {
