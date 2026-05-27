@@ -34,7 +34,9 @@ export default function Navbar() {
           BugBite
         </span>
       </Link>
-      <ul className="flex gap-1">
+
+      {/* Desktop nav */}
+      <ul className="hidden sm:flex gap-1">
         {navItems.map((item) => {
           const active = pathname === item.href;
           return (
@@ -43,8 +45,8 @@ export default function Navbar() {
                 href={item.href}
                 className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${
                   active
-                    ? "bg-[#1A3A2A] text-[#F0FFF4]"
-                    : "text-[#1A3A2A]/70 hover:text-[#1A3A2A] hover:bg-white/60"
+                    ? "bg-[#0D2B19] text-[#FAFFF7]"
+                    : "text-[#0D2B19]/70 hover:text-[#0D2B19] hover:bg-white/60"
                 }`}
               >
                 {item.label}
@@ -53,6 +55,60 @@ export default function Navbar() {
           );
         })}
       </ul>
+
+      {/* Mobile hamburger button */}
+      <button
+        className="sm:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+        onClick={() => setMenuOpen((prev) => !prev)}
+        aria-label="Toggle menu"
+      >
+        <motion.span
+          animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+          className="block w-6 h-0.5 bg-[#0D2B19] rounded-full origin-center"
+          transition={{ duration: 0.2 }}
+        />
+        <motion.span
+          animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
+          className="block w-6 h-0.5 bg-[#0D2B19] rounded-full"
+          transition={{ duration: 0.2 }}
+        />
+        <motion.span
+          animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+          className="block w-6 h-0.5 bg-[#0D2B19] rounded-full origin-center"
+          transition={{ duration: 0.2 }}
+        />
+      </button>
+
+      {/* Mobile dropdown menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="sm:hidden absolute top-full left-0 right-0 bg-[#FAFFF7] border-b border-[#C8E2D4] shadow-sm z-50 px-6 py-4 flex flex-col gap-1"
+          >
+            {navItems.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                    active
+                      ? "bg-[#0D2B19] text-[#FAFFF7]"
+                      : "text-[#0D2B19]/70 hover:text-[#0D2B19] hover:bg-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

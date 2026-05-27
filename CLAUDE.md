@@ -38,3 +38,10 @@ public/       - Static assets (illustrations, icons)
 - texture_pref -> maps to recipe texture tag
 - effort_level -> maps to recipe difficulty
 - flavor_profile -> maps to recipe flavor_tags
+
+## Design System
+Always read DESIGN.md before making any visual or UI decisions.
+- Colors: `#FAFFF7` bg / `#0D2B19` text / `#2A7D50` accent / `#E8B84B` warm / `#FFD60A` gold
+- Fonts: Satoshi (headings) · Fraunces non-italic (accent only) · DM Sans (body) · JetBrains Mono (data)
+- No italic font-style anywhere
+- Quiz selected state: rgba(42,125,80,0.08) fill + 2px emerald border

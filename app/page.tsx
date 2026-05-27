@@ -10,21 +10,21 @@ const features = [
     title: "Bug Quiz",
     description: "Find your spirit bug and recipes that match your comfort level.",
     href: "/quiz",
-    accent: "bg-[#C6F6D5]",
+    accent: "bg-[#EEF7F2]",
   },
   {
     icon: "/icons/bug_worldmap.svg",
     title: "World Map",
     description: "Explore how cultures worldwide have eaten insects for centuries.",
     href: "/map",
-    accent: "bg-[#FEFCBF]",
+    accent: "bg-[#FBF0D2]",
   },
   {
     icon: "/icons/bug_cooking.svg",
     title: "Bug Kitchen",
     description: "Cook recipes tailored to your taste — from cricket flour to whole roasted.",
     href: "/kitchen",
-    accent: "bg-[#FED7AA]",
+    accent: "bg-[#FFF0E8]",
   },
 ];
 
@@ -32,21 +32,21 @@ export default function Home() {
   return (
     <main className="px-8 pt-8 pb-24 max-w-5xl mx-auto">
       {/* Hero */}
-      <section className="py-24 text-center">
+      <section className="py-24 text-center relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#48BB78] mb-6">
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-[#2A7D50] mb-6">
             From Fear to Fork
           </p>
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05] mb-8 text-[#1A3A2A]">
+          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05] mb-8 text-[#0D2B19]">
             Eat bugs.<br />
             Save the planet.<br />
-            <span className="text-[#48BB78]">Have fun.</span>
+            <span className="text-[#2A7D50]">Have fun.</span>
           </h1>
-          <p className="text-lg md:text-xl text-[#1A3A2A]/70 max-w-xl mx-auto leading-relaxed mb-10">
+          <p className="text-lg md:text-xl text-[#0D2B19]/70 max-w-xl mx-auto leading-relaxed mb-10">
             Insects are the most sustainable protein on Earth. We&apos;ll help you get from
             &quot;no way&quot; to &quot;okay, maybe one bite&quot; — gently.
           </p>
@@ -57,7 +57,7 @@ export default function Home() {
           >
             <Link
               href="/quiz"
-              className="inline-block bg-[#1A3A2A] text-[#F0FFF4] text-base font-bold px-10 py-4 rounded-full transition-all hover:bg-[#48BB78] shadow-sm hover:shadow-lg"
+              className="inline-block bg-[#2A7D50] text-white text-base font-bold px-10 py-4 rounded-[10px] transition-all hover:bg-[#1F6040] shadow-sm hover:shadow-lg"
             >
               Take the Bug Quiz →
             </Link>
@@ -67,18 +67,18 @@ export default function Home() {
 
       {/* Emotional arc */}
       <motion.div
-        className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-8 text-sm font-medium text-[#1A3A2A]/50"
+        className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-8 text-sm font-medium text-[#0D2B19]/50"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
       >
         <span>Fear</span>
-        <span className="text-[#48BB78]">→</span>
+        <span className="text-[#2A7D50]">→</span>
         <span>Fascination</span>
-        <span className="text-[#48BB78]">→</span>
+        <span className="text-[#2A7D50]">→</span>
         <span>Familiarity</span>
-        <span className="text-[#48BB78]">→</span>
-        <span className="font-bold text-[#48BB78]">Food</span>
+        <span className="text-[#2A7D50]">→</span>
+        <span className="font-bold text-[#2A7D50]">Food</span>
       </motion.div>
 
       {/* Feature cards */}
@@ -93,19 +93,22 @@ export default function Home() {
             >
               <Link
                 href={feature.href}
-                className="group block bg-white rounded-3xl p-7 h-full transition-all hover:-translate-y-1 hover:shadow-xl shadow-sm"
+                className="group block bg-white border border-[#C8E2D4] rounded-2xl overflow-hidden h-full transition-all hover:-translate-y-1 hover:shadow-md"
               >
                 <div className={`w-14 h-14 rounded-2xl ${feature.accent} flex items-center justify-center mb-5`}>
                   <Image src={feature.icon} alt={feature.title} width={32} height={32} />
                 </div>
-                <h2 className="text-xl font-bold mb-2 text-[#1A3A2A]">
-                  {feature.title}
-                </h2>
-                <p className="text-[#1A3A2A]/60 leading-relaxed text-sm">
-                  {feature.description}
-                </p>
-                <div className="mt-6 text-sm font-semibold text-[#48BB78] opacity-0 group-hover:opacity-100 transition-opacity">
-                  Explore →
+                {/* Text */}
+                <div className="p-6">
+                  <h2 className="text-xl font-bold mb-2 text-[#0D2B19]">
+                    {feature.title}
+                  </h2>
+                  <p className="text-[#0D2B19]/60 leading-relaxed text-sm">
+                    {feature.description}
+                  </p>
+                  <div className="mt-5 text-sm font-semibold text-[#2A7D50] opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                    Explore →
+                  </div>
                 </div>
               </Link>
             </motion.div>

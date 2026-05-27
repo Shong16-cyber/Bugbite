@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --bg:          #FAFFF7;
+    --surface:     #EEF7F2;
+    --border:      #C8E2D4;
+    --text:        #0D2B19;
+    --text-muted:  #4A7A5A;
+    --accent:      #2A7D50;
+    --accent-hover:#1F6040;
+    --amber:       #E8B84B;
+    --gold:        #FFD60A;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Satoshi', system-ui, sans-serif;
+  }
+}

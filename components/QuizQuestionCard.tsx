@@ -37,7 +37,7 @@ export default function QuizQuestionCard({
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="w-full max-w-xl mx-auto"
     >
-      <h2 className="text-3xl md:text-4xl font-extrabold text-[#1A3A2A] tracking-tight mb-8 text-center leading-tight">
+      <h2 className="text-3xl md:text-4xl font-extrabold text-[#0D2B19] tracking-tight mb-8 text-center leading-tight">
         {question.question}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">

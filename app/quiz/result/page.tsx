@@ -55,13 +55,13 @@ export default function QuizResultPage() {
     return (
       <main className="flex flex-col items-center justify-center min-h-[70vh] px-6 text-center">
         <div className="text-5xl mb-4">🤔</div>
-        <h1 className="text-3xl font-extrabold text-[#1A3A2A] mb-3">
+        <h1 className="text-3xl font-extrabold text-[#0D2B19] mb-3">
           No quiz data found
         </h1>
-        <p className="text-[#1A3A2A]/60 mb-8">Take the quiz first!</p>
+        <p className="text-[#0D2B19]/60 mb-8">Take the quiz first!</p>
         <Link
           href="/quiz"
-          className="bg-[#1A3A2A] hover:bg-[#48BB78] text-[#F0FFF4] font-bold px-8 py-3 rounded-full transition-colors"
+          className="bg-[#0D2B19] hover:bg-[#2A7D50] text-[#FAFFF7] font-bold px-8 py-3 rounded-full transition-colors"
         >
           Start Quiz →
         </Link>
