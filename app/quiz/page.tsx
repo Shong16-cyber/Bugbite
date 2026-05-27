@@ -8,7 +8,13 @@ import QuizProgress from "@/components/QuizProgress";
 import QuizQuestionCard from "@/components/QuizQuestionCard";
 import QuizStageIntro from "@/components/QuizStageIntro";
 
-type Phase = "intro-1" | "stage-1" | "intro-2" | "stage-2" | "done";
+type Phase =
+  | "intro-1"
+  | "stage-1"
+  | "intro-2"
+  | "stage-2"
+  | "intro-3"
+  | "done";
 
 const stage1Questions = quizQuestions.filter((q) => q.stage === 1);
 const stage2Questions = quizQuestions.filter((q) => q.stage === 2);
@@ -21,7 +27,7 @@ export default function QuizPage() {
 
   const currentQuestions = phase === "stage-1" ? stage1Questions : stage2Questions;
   const currentQuestion = currentQuestions[questionIndex];
-  const stageLabel = phase === "stage-1" ? "Stage 1 of 2" : "Stage 2 of 2";
+  const stageLabel = phase === "stage-1" ? "Stage 1 of 3" : "Stage 2 of 3";
 
   const handleAnswer = (value: string) => {
     if (!currentQuestion) return;
@@ -29,25 +35,26 @@ export default function QuizPage() {
     const newAnswers = { ...answers, [currentQuestion.dimension]: value };
     setAnswers(newAnswers);
 
-    // Move to next question or next phase
     if (questionIndex < currentQuestions.length - 1) {
       setQuestionIndex(questionIndex + 1);
     } else if (phase === "stage-1") {
-      // Stage 1 done, go to stage 2 intro
       setPhase("intro-2");
       setQuestionIndex(0);
     } else {
-      // Stage 2 done - pass answers to result screen via sessionStorage
+      // Stage 2 done - save answers and show Stage 3 intro
       sessionStorage.setItem("bugbite_quiz_answers", JSON.stringify(newAnswers));
-      setPhase("done");
-      // Issue #4 will build the result screen. For now, redirect to placeholder.
-      router.push("/quiz/result");
+      setPhase("intro-3");
     }
   };
 
   const startStage = (stage: 1 | 2) => {
     setPhase(stage === 1 ? "stage-1" : "stage-2");
     setQuestionIndex(0);
+  };
+
+  const goToResult = () => {
+    setPhase("done");
+    router.push("/quiz/result");
   };
 
   return (
@@ -90,6 +97,9 @@ export default function QuizPage() {
               />
             </AnimatePresence>
           </motion.div>
+        )}
+        {phase === "intro-3" && (
+          <QuizStageIntro key="intro-3" stage={3} onContinue={goToResult} />
         )}
         {phase === "done" && (
           <motion.div
