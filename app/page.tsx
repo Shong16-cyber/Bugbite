@@ -1,25 +1,26 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 const features = [
   {
-    emoji: "🦗",
+    icon: "/icons/bug_basic.svg",
     title: "Bug Quiz",
     description: "Find your spirit bug and recipes that match your comfort level.",
     href: "/quiz",
     accent: "bg-[#C6F6D5]",
   },
   {
-    emoji: "🗺️",
+    icon: "/icons/bug_worldmap.svg",
     title: "World Map",
     description: "Explore how cultures worldwide have eaten insects for centuries.",
     href: "/map",
     accent: "bg-[#FEFCBF]",
   },
   {
-    emoji: "🍳",
+    icon: "/icons/bug_cooking.svg",
     title: "Bug Kitchen",
     description: "Cook recipes tailored to your taste — from cricket flour to whole roasted.",
     href: "/kitchen",
@@ -94,8 +95,8 @@ export default function Home() {
                 href={feature.href}
                 className="group block bg-white rounded-3xl p-7 h-full transition-all hover:-translate-y-1 hover:shadow-xl shadow-sm"
               >
-                <div className={`w-14 h-14 rounded-2xl ${feature.accent} flex items-center justify-center text-3xl mb-5`}>
-                  {feature.emoji}
+                <div className={`w-14 h-14 rounded-2xl ${feature.accent} flex items-center justify-center mb-5`}>
+                  <Image src={feature.icon} alt={feature.title} width={32} height={32} />
                 </div>
                 <h2 className="text-xl font-bold mb-2 text-[#1A3A2A]">
                   {feature.title}
