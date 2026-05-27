@@ -52,12 +52,14 @@ export default function QuizResultPage() {
   }
 
   return (
+    <main className="px-6 py-10 max-w-2xl mx-auto">
     <main className="px-6 py-12 max-w-3xl mx-auto">
       {/* Persona reveal */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
+        className="text-center mb-10"
         className="text-center mb-12"
       >
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#48BB78] mb-3">
