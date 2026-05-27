@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { label: "Quiz", href: "/quiz" },
@@ -15,17 +14,14 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full px-6 py-5 sm:px-8 sm:py-6 flex items-center justify-between max-w-6xl mx-auto relative">
-      {/* Logo */}
+    <nav className="w-full px-8 py-6 flex items-center justify-between max-w-6xl mx-auto">
       <Link
         href="/"
         className="flex items-center gap-2 group"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={() => setMenuOpen(false)}
       >
         <Image
           src={hovered ? "/icons/bug_hover.svg" : "/icons/bug_basic.svg"}
@@ -34,7 +30,7 @@ export default function Navbar() {
           height={32}
           className="transition-transform group-hover:-rotate-12"
         />
-        <span className="text-xl font-bold tracking-tight text-[#0D2B19]">
+        <span className="text-xl font-bold tracking-tight text-[#1A3A2A]">
           BugBite
         </span>
       </Link>

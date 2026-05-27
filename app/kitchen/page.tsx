@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
-import Image from "next/image";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { recipes, getSortedRecipes, getMatchLabel, type Recipe } from "@/lib/recipes";
@@ -21,40 +20,28 @@ const defaultFilters: Filters = {
 };
 
 const difficultyColors: Record<string, string> = {
-  easy: "bg-[#C6F6D5] text-[#0D2B19]",
-  medium: "bg-[#FEFCBF] text-[#0D2B19]",
-  adventurous: "bg-[#FED7AA] text-[#0D2B19]",
+  easy: "bg-[#C6F6D5] text-[#1A3A2A]",
+  medium: "bg-[#FEFCBF] text-[#1A3A2A]",
+  adventurous: "bg-[#FED7AA] text-[#1A3A2A]",
 };
 
 const foodFormColors: Record<string, string> = {
-  whole: "bg-[#FECACA] text-[#0D2B19]",
-  pieces: "bg-[#D8B4FE] text-[#0D2B19]",
-  powder: "bg-[#BFDBFE] text-[#0D2B19]",
-  invisible: "bg-[#E5E7EB] text-[#0D2B19]",
+  whole: "bg-[#FECACA] text-[#1A3A2A]",
+  pieces: "bg-[#D8B4FE] text-[#1A3A2A]",
+  powder: "bg-[#BFDBFE] text-[#1A3A2A]",
+  invisible: "bg-[#E5E7EB] text-[#1A3A2A]",
 };
 
 export default function KitchenPage() {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string> | null>(null);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [persona, setPersona] = useState<{ name: string; emoji: string; tagline: string; accentColor: string } | null>(null);
-  const [filterOpen, setFilterOpen] = useState(false);
-  const filterRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("bugbite_quiz_answers");
     if (stored) setQuizAnswers(JSON.parse(stored));
     const storedPersona = sessionStorage.getItem("bugbite_persona");
     if (storedPersona) setPersona(JSON.parse(storedPersona));
-  }, []);
-
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
-        setFilterOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
   const sorted = useMemo(() => getSortedRecipes(quizAnswers), [quizAnswers]);
@@ -90,18 +77,18 @@ export default function KitchenPage() {
           <div className="flex items-center gap-3">
             <span className="text-3xl">{persona.emoji}</span>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#0D2B19]/60 mb-0.5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#1A3A2A]/60 mb-0.5">
                 Your Persona
               </p>
-              <p className="font-bold text-[#0D2B19] leading-tight">
+              <p className="font-bold text-[#1A3A2A] leading-tight">
                 {persona.name}
               </p>
-              <p className="text-xs text-[#0D2B19]/70">{persona.tagline}</p>
+              <p className="text-xs text-[#1A3A2A]/70">{persona.tagline}</p>
             </div>
           </div>
           <Link
             href="/quiz/result"
-            className="text-xs font-semibold text-[#0D2B19]/60 hover:text-[#0D2B19] whitespace-nowrap transition-colors"
+            className="text-xs font-semibold text-[#1A3A2A]/60 hover:text-[#1A3A2A] whitespace-nowrap transition-colors"
           >
             See result →
           </Link>
@@ -109,13 +96,14 @@ export default function KitchenPage() {
       )}
 
       {/* Header */}
-      <div className="mb-8 flex items-center gap-6">
-        <Image src="/icons/bug_cooking.svg" alt="" width={96} height={96} className="object-contain flex-shrink-0 drop-shadow-sm" />
-        <div>
-        <h1 className="text-4xl font-extrabold text-[#0D2B19] tracking-tight mb-2">
-          Bug Kitchen
+      <div className="mb-8">
+        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#48BB78] mb-2">
+          Level 2
+        </p>
+        <h1 className="text-4xl font-extrabold text-[#1A3A2A] tracking-tight mb-2">
+          Bug Kitchen 🍳
         </h1>
-        <p className="text-[#0D2B19]/60 text-sm">
+        <p className="text-[#1A3A2A]/60 text-sm">
           {quizAnswers
             ? "Sorted by your quiz preferences. Your best matches are first."
             : "Complete the quiz to get personalized recommendations. Showing easiest first."}
@@ -123,107 +111,95 @@ export default function KitchenPage() {
         {!quizAnswers && (
           <Link
             href="/quiz"
-            className="inline-block mt-3 text-sm font-semibold text-[#2A7D50] underline underline-offset-2"
+            className="inline-block mt-3 text-sm font-semibold text-[#48BB78] underline underline-offset-2"
           >
             Take the quiz →
           </Link>
         )}
-        </div>
       </div>
 
       {/* Filters */}
-      <div ref={filterRef} className="relative mb-6">
-        {/* Trigger row */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <button
-            onClick={() => setFilterOpen((o) => !o)}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-semibold border transition-all ${
-              filterOpen
-                ? "bg-[#0D2B19] text-white border-[#0D2B19]"
-                : "bg-white text-[#0D2B19] border-[#C8E2D4] hover:border-[#0D2B19]/30"
-            }`}
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0">
-              <path d="M1 3h12M3 7h8M5 11h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-            Filter
-            {hasFilters && (
-              <span className={`text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center ${
-                filterOpen ? "bg-white text-[#0D2B19]" : "bg-[#2A7D50] text-white"
-              }`}>
-                {Object.values(filters).filter(Boolean).length}
-              </span>
-            )}
-          </button>
+      <div className="bg-white rounded-2xl p-4 mb-6 shadow-sm">
+        <div className="flex flex-wrap gap-2 items-center">
+          <span className="text-xs font-semibold text-[#1A3A2A]/50 uppercase tracking-wider mr-1">
+            Filter:
+          </span>
 
-          {/* Active filter chips */}
-          {Object.entries(filters).map(([key, val]) =>
-            val ? (
-              <button
-                key={key}
-                onClick={() => setFilter(key as keyof Filters, val)}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[#2A7D50]/10 text-[#2A7D50] border border-[#2A7D50]/20 hover:bg-[#2A7D50]/20 transition-colors"
-              >
-                {val}
-                <span className="text-[#2A7D50]/60 text-xs leading-none">×</span>
-              </button>
-            ) : null
-          )}
+          {/* Insect */}
+          {["cricket", "mealworm", "silkworm", "ant", "grasshopper"].map((v) => (
+            <button
+              key={v}
+              onClick={() => setFilter("insect", v)}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                filters.insect === v
+                  ? "bg-[#1A3A2A] text-white"
+                  : "bg-[#F0FFF4] text-[#1A3A2A]/70 hover:bg-[#C6F6D5]"
+              }`}
+            >
+              {v}
+            </button>
+          ))}
+
+          <div className="w-px h-4 bg-[#1A3A2A]/10 mx-1" />
+
+          {/* Difficulty */}
+          {["easy", "medium", "adventurous"].map((v) => (
+            <button
+              key={v}
+              onClick={() => setFilter("difficulty", v)}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                filters.difficulty === v
+                  ? "bg-[#1A3A2A] text-white"
+                  : "bg-[#F0FFF4] text-[#1A3A2A]/70 hover:bg-[#C6F6D5]"
+              }`}
+            >
+              {v}
+            </button>
+          ))}
+
+          <div className="w-px h-4 bg-[#1A3A2A]/10 mx-1" />
+
+          {/* Food form */}
+          {["whole", "powder", "invisible"].map((v) => (
+            <button
+              key={v}
+              onClick={() => setFilter("foodForm", v)}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                filters.foodForm === v
+                  ? "bg-[#1A3A2A] text-white"
+                  : "bg-[#F0FFF4] text-[#1A3A2A]/70 hover:bg-[#C6F6D5]"
+              }`}
+            >
+              {v}
+            </button>
+          ))}
+
+          <div className="w-px h-4 bg-[#1A3A2A]/10 mx-1" />
+
+          {/* Flavor */}
+          {["sweet", "savory", "spicy"].map((v) => (
+            <button
+              key={v}
+              onClick={() => setFilter("flavor", v)}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                filters.flavor === v
+                  ? "bg-[#1A3A2A] text-white"
+                  : "bg-[#F0FFF4] text-[#1A3A2A]/70 hover:bg-[#C6F6D5]"
+              }`}
+            >
+              {v}
+            </button>
+          ))}
 
           {hasFilters && (
             <button
               onClick={resetFilters}
-              className="text-xs font-medium text-[#0D2B19]/40 hover:text-[#0D2B19] transition-colors"
+              className="ml-auto text-xs font-semibold text-[#1A3A2A]/40 hover:text-[#1A3A2A] transition-colors"
             >
-              Clear all
+              Clear all ×
             </button>
           )}
         </div>
-
-        {/* Dropdown */}
-        <AnimatePresence>
-          {filterOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.15 }}
-              className="absolute top-full left-0 mt-2 z-50 bg-white border border-[#C8E2D4] rounded-2xl shadow-lg p-4 min-w-[280px]"
-            >
-              <div className="space-y-3">
-                {(
-                  [
-                    { label: "Insect", key: "insect", values: ["cricket", "mealworm", "silkworm", "ant", "grasshopper"] },
-                    { label: "Difficulty", key: "difficulty", values: ["easy", "medium", "adventurous"] },
-                    { label: "Form", key: "foodForm", values: ["whole", "powder", "invisible"] },
-                    { label: "Flavor", key: "flavor", values: ["sweet", "savory", "spicy"] },
-                  ] as const
-                ).map(({ label, key, values }) => (
-                  <div key={key}>
-                    <p className="text-[10px] font-bold text-[#0D2B19]/40 uppercase tracking-wider mb-1.5">
-                      {label}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {values.map((v) => (
-                        <button
-                          key={v}
-                          onClick={() => setFilter(key, v)}
-                          className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all border ${
-                            filters[key] === v
-                              ? "bg-[#2A7D50] text-white border-[#2A7D50]"
-                              : "bg-white text-[#0D2B19]/60 border-[#C8E2D4] hover:border-[#2A7D50]/50 hover:text-[#0D2B19]"
-                          }`}
-                        >
-                          {v}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* Recipe Grid */}
@@ -236,13 +212,13 @@ export default function KitchenPage() {
             className="text-center py-20"
           >
             <div className="text-5xl mb-4">🤷</div>
-            <h2 className="text-xl font-bold text-[#0D2B19] mb-2">No recipes match</h2>
-            <p className="text-[#0D2B19]/60 text-sm mb-4">
+            <h2 className="text-xl font-bold text-[#1A3A2A] mb-2">No recipes match</h2>
+            <p className="text-[#1A3A2A]/60 text-sm mb-4">
               Try removing a filter or two.
             </p>
             <button
               onClick={resetFilters}
-              className="text-sm font-semibold text-[#2A7D50] underline underline-offset-2"
+              className="text-sm font-semibold text-[#48BB78] underline underline-offset-2"
             >
               Clear all filters
             </button>
@@ -283,46 +259,38 @@ function RecipeCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.04 }}
-      className="h-full"
     >
       <Link
         href={`/kitchen/recipe/${recipe.id}`}
-        className="group flex flex-col bg-white border border-[#C8E2D4] rounded-2xl p-5 h-full transition-all hover:-translate-y-1 hover:shadow-md"
+        className="group block bg-white rounded-2xl p-5 h-full transition-all hover:-translate-y-1 hover:shadow-lg shadow-sm"
       >
-        {/* Top: emoji + difficulty badge */}
-        <div className="flex items-start justify-between mb-3">
-          <span className="text-4xl">{recipe.emoji}</span>
-          <span className={`px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide ${difficultyColors[recipe.difficulty]}`}>
-            {recipe.difficulty}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h2 className="font-bold text-[#0D2B19] mb-1.5 leading-tight">
+        <div className="text-4xl mb-3">{recipe.emoji}</div>
+        <h2 className="font-bold text-[#1A3A2A] mb-1 leading-tight">
           {recipe.name}
         </h2>
-
-        {/* Desc */}
-        <p className="text-xs text-[#0D2B19]/60 leading-relaxed flex-1">
+        <p className="text-xs text-[#1A3A2A]/60 mb-3 leading-relaxed">
           {recipe.shortDesc}
         </p>
 
         {matchLabel && (
-          <p className="text-[10px] font-semibold text-[#2A7D50] uppercase tracking-wider mt-2">
+          <p className="text-[10px] font-semibold text-[#48BB78] uppercase tracking-wider mb-3">
             {matchLabel}
           </p>
         )}
 
-        {/* Meta row */}
-        <div className="flex items-center gap-4 mt-4 pt-3 border-t border-[#C8E2D4]">
-          <div className="flex items-baseline gap-1">
-            <span className="font-mono text-sm font-semibold text-[#0D2B19]">{recipe.prepTime}</span>
-            <span className="text-[10px] text-[#0D2B19]/50">prep</span>
-          </div>
-          <div className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${foodFormColors[recipe.foodForm]}`}>
+        <div className="flex flex-wrap gap-1.5">
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${difficultyColors[recipe.difficulty]}`}>
+            {recipe.difficulty}
+          </span>
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${foodFormColors[recipe.foodForm]}`}>
             {recipe.foodForm}
-          </div>
-          <span className="text-[10px] text-[#0D2B19]/50 ml-auto">{recipe.insect}</span>
+          </span>
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#F0FFF4] text-[#1A3A2A]/70">
+            {recipe.insect}
+          </span>
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#F0FFF4] text-[#1A3A2A]/70">
+            {recipe.prepTime}
+          </span>
         </div>
       </Link>
     </motion.div>

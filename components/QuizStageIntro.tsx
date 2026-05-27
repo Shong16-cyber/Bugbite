@@ -10,21 +10,21 @@ type Props = {
 
 const stageContent = {
   1: {
-    icon: "/icons/bug_basic.svg",
+    emoji: "🫣",
     label: "Stage 1 of 3",
     title: "How Brave Are You?",
     description: "Let's start with how you feel about bugs. No judgment — we just want to know where you're starting from.",
     cta: "Let's go →",
   },
   2: {
-    icon: "/icons/bug_cooking.svg",
+    emoji: "🍽️",
     label: "Stage 2 of 3",
     title: "What's Your Flavor?",
     description: "Now let's talk food. Your taste preferences will shape the recipes we recommend.",
     cta: "Continue →",
   },
   3: {
-    icon: "/icons/bug_basic.svg",
+    emoji: "✨",
     label: "Stage 3 of 3",
     title: "Your Bug Persona",
     description: "All done! Let's see which bug matches your vibe — and what you should eat first.",

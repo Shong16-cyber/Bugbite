@@ -95,15 +95,8 @@ export default function Home() {
                 href={feature.href}
                 className="group block bg-white border border-[#C8E2D4] rounded-2xl overflow-hidden h-full transition-all hover:-translate-y-1 hover:shadow-md"
               >
-                {/* Illustration area */}
-                <div className={`flex items-center justify-center ${feature.accent} h-36 px-8 py-4`}>
-                  <Image
-                    src={feature.icon}
-                    alt={feature.title}
-                    width={110}
-                    height={110}
-                    className="object-contain drop-shadow-sm"
-                  />
+                <div className={`w-14 h-14 rounded-2xl ${feature.accent} flex items-center justify-center mb-5`}>
+                  <Image src={feature.icon} alt={feature.title} width={32} height={32} />
                 </div>
                 {/* Text */}
                 <div className="p-6">

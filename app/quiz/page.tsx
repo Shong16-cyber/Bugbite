@@ -25,10 +25,9 @@ export default function QuizPage() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<QuizAnswers>({});
 
-  // Clear any stale answers and persona from a previous session when the quiz starts
+  // Clear any stale answers from a previous session when the quiz starts
   useEffect(() => {
     sessionStorage.removeItem("bugbite_quiz_answers");
-    sessionStorage.removeItem("bugbite_persona");
   }, []);
 
   const currentQuestions = phase === "stage-1" ? stage1Questions : stage2Questions;
@@ -68,6 +67,9 @@ export default function QuizPage() {
         setPhase("stage-1");
         setQuestionIndex(stage1Questions.length - 1);
       }
+      // Stage 2 done - save answers and show Stage 3 intro
+      sessionStorage.setItem("bugbite_quiz_answers", JSON.stringify(newAnswers));
+      setPhase("intro-3");
     }
   };
 
