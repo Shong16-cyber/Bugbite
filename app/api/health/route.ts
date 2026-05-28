@@ -1,7 +1,9 @@
-import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
+  const { supabase } = await import("@/lib/supabase");
   try {
     // Simple health check - just verifying the client initializes
     const { error } = await supabase.from("_health").select("*").limit(1);

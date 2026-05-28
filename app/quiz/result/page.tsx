@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import type { QuizAnswers } from "@/lib/quizQuestions";
 import { matchPersona, personas, type Persona } from "@/lib/personas";
 import { getTopRecipes, buildPickedReason, type Recipe } from "@/lib/recipes";
 
-export default function QuizResultPage() {
+function QuizResultContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [answers, setAnswers] = useState<QuizAnswers | null>(null);
@@ -229,5 +229,13 @@ export default function QuizResultPage() {
         </div>
       </motion.section>
     </main>
+  );
+}
+
+export default function QuizResultPage() {
+  return (
+    <Suspense fallback={<main className="flex items-center justify-center min-h-[70vh]"><div className="text-[#0D2B19]/40">Loading...</div></main>}>
+      <QuizResultContent />
+    </Suspense>
   );
 }

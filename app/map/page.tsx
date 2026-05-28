@@ -86,13 +86,13 @@ export default function MapPage() {
               <ZoomableGroup
                 center={mapCenter}
                 zoom={mapZoom}
-                onMoveEnd={({ coordinates, zoom }) => {
+                onMoveEnd={({ coordinates, zoom }: { coordinates: [number, number]; zoom: number }) => {
                   setMapCenter(coordinates);
                   setMapZoom(zoom);
                 }}
               >
                 <Geographies geography={GEO_URL}>
-                  {({ geographies }) =>
+                  {({ geographies }: { geographies: { rsmKey: string }[] }) =>
                     geographies.map((geo) => (
                       <Geography
                         key={geo.rsmKey}
