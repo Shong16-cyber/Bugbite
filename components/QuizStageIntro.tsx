@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 type Props = {
   stage: 1 | 2 | 3;
@@ -11,6 +12,7 @@ type Props = {
 const stageContent = {
   1: {
     icon: "/icons/bug_basic.svg",
+    iconHover: "/icons/bug_hover.svg",
     label: "Stage 1 of 3",
     title: "How Brave Are You?",
     description: "Let's start with how you feel about bugs. No judgment — we just want to know where you're starting from.",
@@ -18,6 +20,7 @@ const stageContent = {
   },
   2: {
     icon: "/icons/bug_cooking.svg",
+    iconHover: "/icons/bug_cooking_hover.svg",
     label: "Stage 2 of 3",
     title: "What's Your Flavor?",
     description: "Now let's talk food. Your taste preferences will shape the recipes we recommend.",
@@ -25,6 +28,7 @@ const stageContent = {
   },
   3: {
     icon: "/icons/bug_basic.svg",
+    iconHover: "/icons/bug_hover.svg",
     label: "Stage 3 of 3",
     title: "Your Bug Persona",
     description: "All done! Let's see which bug matches your vibe — and what you should eat first.",
@@ -34,6 +38,15 @@ const stageContent = {
 
 export default function QuizStageIntro({ stage, onContinue }: Props) {
   const content = stageContent[stage];
+  const [frame, setFrame] = useState(0);
+
+  useEffect(() => {
+    setFrame(0);
+    const interval = setInterval(() => setFrame((f) => (f === 0 ? 1 : 0)), 500);
+    return () => clearInterval(interval);
+  }, [stage]);
+
+  const currentIcon = frame === 1 ? content.iconHover : content.icon;
 
   return (
     <motion.div
@@ -43,15 +56,19 @@ export default function QuizStageIntro({ stage, onContinue }: Props) {
       transition={{ duration: 0.4 }}
       className="w-full max-w-lg mx-auto text-center"
     >
-      <div className="w-36 h-36 mx-auto mb-4 flex items-center justify-center">
+      <motion.div
+        className="w-36 h-36 mx-auto mb-4 flex items-center justify-center"
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+      >
         <Image
-          src={content.icon}
+          src={currentIcon}
           alt="Bug character"
           width={144}
           height={144}
           className="object-contain drop-shadow-sm"
         />
-      </div>
+      </motion.div>
       <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#2A7D50] mb-3">
         {content.label}
       </p>
