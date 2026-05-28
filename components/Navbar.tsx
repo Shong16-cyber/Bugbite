@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { label: "Quiz", href: "/quiz" },
@@ -14,6 +15,7 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav className="w-full px-8 py-6 flex items-center justify-between max-w-6xl mx-auto">

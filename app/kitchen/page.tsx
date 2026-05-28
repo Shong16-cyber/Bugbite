@@ -288,9 +288,6 @@ function RecipeCard({
           <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#F0FFF4] text-[#1A3A2A]/70">
             {recipe.insect}
           </span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#F0FFF4] text-[#1A3A2A]/70">
-            {recipe.prepTime}
-          </span>
         </div>
       </Link>
     </motion.div>

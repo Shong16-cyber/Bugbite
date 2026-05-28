@@ -49,9 +49,9 @@ export default function MapPage() {
             projectionConfig={{ scale: 130, center: [20, 10] }}
             style={{ width: "100%", height: "420px" }}
           >
-            <ZoomableGroup center={mapCenter} zoom={mapZoom} onMoveEnd={({ coordinates, zoom }) => { setMapCenter(coordinates); setMapZoom(zoom); }}>
+            <ZoomableGroup center={mapCenter} zoom={mapZoom} onMoveEnd={({ coordinates, zoom }: { coordinates: [number, number]; zoom: number }) => { setMapCenter(coordinates); setMapZoom(zoom); }}>
               <Geographies geography={GEO_URL}>
-                {({ geographies }) =>
+                {({ geographies }: { geographies: { rsmKey: string }[] }) =>
                   geographies.map((geo) => (
                     <Geography
                       key={geo.rsmKey}

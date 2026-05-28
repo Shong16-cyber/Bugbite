@@ -1,20 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { QuizAnswers } from "@/lib/quizQuestions";
-import { matchPersona, type Persona } from "@/lib/personas";
+import { matchPersona, personas, type Persona } from "@/lib/personas";
 import { getTopRecipes, buildPickedReason, type Recipe } from "@/lib/recipes";
 
-export default function QuizResultPage() {
+function QuizResultContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [answers, setAnswers] = useState<QuizAnswers | null>(null);
   const [persona, setPersona] = useState<Persona | null>(null);
   const [topRecipes, setTopRecipes] = useState<Recipe[]>([]);
   const [copied, setCopied] = useState(false);
+  const [isShared, setIsShared] = useState(false);
 
   useEffect(() => {
     const personaParam = searchParams.get("p");
@@ -39,7 +40,7 @@ export default function QuizResultPage() {
       setPersona(matchPersona(parsed));
       setTopRecipes(getTopRecipes(parsed, 3));
     }
-  };
+  }, [searchParams]);
 
   const handleCopyLink = async () => {
     try {
@@ -70,14 +71,12 @@ export default function QuizResultPage() {
   }
 
   return (
-    <main className="px-6 py-10 max-w-2xl mx-auto">
     <main className="px-6 py-12 max-w-3xl mx-auto">
       {/* Persona reveal */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-10"
         className="text-center mb-12"
       >
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#48BB78] mb-3">
@@ -207,5 +206,13 @@ export default function QuizResultPage() {
         </div>
       </motion.section>
     </main>
+  );
+}
+
+export default function QuizResultPage() {
+  return (
+    <Suspense fallback={<main className="flex items-center justify-center min-h-[70vh]"><div className="text-[#0D2B19]/40">Loading...</div></main>}>
+      <QuizResultContent />
+    </Suspense>
   );
 }

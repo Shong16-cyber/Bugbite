@@ -192,6 +192,18 @@ export function getTopRecipes(answers: Record<string, string>, n = 3): Recipe[] 
 }
 
 // Generate the "Picked for you" reason for a recipe based on answers
+export function getSortedRecipes(answers: Record<string, string> | null): Recipe[] {
+  if (!answers) return [...recipes];
+  return recipes
+    .map((r) => ({ recipe: r, score: scoreRecipe(r, answers) }))
+    .sort((a, b) => b.score - a.score)
+    .map((x) => x.recipe);
+}
+
+export function getMatchLabel(recipe: Recipe, answers: Record<string, string>): string {
+  return buildPickedReason(recipe, answers);
+}
+
 export function buildPickedReason(recipe: Recipe, answers: Record<string, string>): string {
   const reasons: string[] = [];
 

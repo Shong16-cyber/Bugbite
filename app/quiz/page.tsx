@@ -67,9 +67,6 @@ export default function QuizPage() {
         setPhase("stage-1");
         setQuestionIndex(stage1Questions.length - 1);
       }
-      // Stage 2 done - save answers and show Stage 3 intro
-      sessionStorage.setItem("bugbite_quiz_answers", JSON.stringify(newAnswers));
-      setPhase("intro-3");
     }
   };
 
