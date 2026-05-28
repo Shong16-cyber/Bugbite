@@ -7,8 +7,7 @@ import { useState, useEffect } from "react";
 
 type Feature = {
   icon: string;
-  hoverIcon?: string;
-  hoverAnim?: "wiggle" | "spin" | "bounce";
+  hoverIcon: string;
   title: string;
   description: string;
   href: string;
@@ -26,7 +25,7 @@ const features: Feature[] = [
   },
   {
     icon: "/icons/bug_worldmap.svg",
-    hoverAnim: "wiggle",
+    hoverIcon: "/icons/bug_worldmap_hover.svg",
     title: "World Map",
     description: "Explore how cultures worldwide have eaten insects for centuries.",
     href: "/map",
@@ -34,7 +33,7 @@ const features: Feature[] = [
   },
   {
     icon: "/icons/bug_cooking.svg",
-    hoverAnim: "bounce",
+    hoverIcon: "/icons/bug_cooking_hover.svg",
     title: "Bug Kitchen",
     description: "Cook recipes tailored to your taste — from cricket flour to whole roasted.",
     href: "/kitchen",
@@ -46,41 +45,17 @@ function FeatureCard({ feature, delay }: { feature: Feature; delay: number }) {
   const [hovered, setHovered] = useState(false);
   const [frame, setFrame] = useState(0);
 
-  // 2-frame sprite animation for cards with a hoverIcon
+  // 2-frame sprite animation
   useEffect(() => {
-    if (!hovered || !feature.hoverIcon) {
+    if (!hovered) {
       setFrame(0);
       return;
     }
     const interval = setInterval(() => setFrame((f) => (f === 0 ? 1 : 0)), 200);
     return () => clearInterval(interval);
-  }, [hovered, feature.hoverIcon]);
+  }, [hovered]);
 
-  const currentIcon =
-    feature.hoverIcon && frame === 1 ? feature.hoverIcon : feature.icon;
-
-  const wiggleVariants = {
-    rest: { rotate: 0 },
-    hover: {
-      rotate: [0, -12, 12, -8, 8, -4, 4, 0] as number[],
-      transition: { duration: 0.6, type: "tween" as const },
-    },
-  };
-
-  const bounceVariants = {
-    rest: { y: 0 },
-    hover: {
-      y: [0, -10, 0, -6, 0] as number[],
-      transition: { duration: 0.5, type: "tween" as const },
-    },
-  };
-
-  const motionVariant =
-    feature.hoverAnim === "wiggle"
-      ? wiggleVariants
-      : feature.hoverAnim === "bounce"
-      ? bounceVariants
-      : null;
+  const currentIcon = frame === 1 ? feature.hoverIcon : feature.icon;
 
   return (
     <motion.div
@@ -96,28 +71,13 @@ function FeatureCard({ feature, delay }: { feature: Feature; delay: number }) {
       >
         {/* Illustration area */}
         <div className={`flex items-center justify-center ${feature.accent} h-36 px-8 py-4`}>
-          {motionVariant ? (
-            <motion.div
-              variants={motionVariant}
-              animate={hovered ? "hover" : "rest"}
-            >
-              <Image
-                src={feature.icon}
-                alt={feature.title}
-                width={110}
-                height={110}
-                className="object-contain drop-shadow-sm"
-              />
-            </motion.div>
-          ) : (
-            <Image
-              src={currentIcon}
-              alt={feature.title}
-              width={110}
-              height={110}
-              className="object-contain drop-shadow-sm"
-            />
-          )}
+          <Image
+            src={currentIcon}
+            alt={feature.title}
+            width={110}
+            height={110}
+            className="object-contain drop-shadow-sm"
+          />
         </div>
         {/* Text */}
         <div className="p-6">
