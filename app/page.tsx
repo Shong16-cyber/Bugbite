@@ -8,6 +8,9 @@ import { useState, useEffect } from "react";
 type Feature = {
   icon: string;
   hoverIcon: string;
+  iconSize: number;
+  hoverIconSize: number;
+  frameMs: number;
   title: string;
   description: string;
   href: string;
@@ -18,6 +21,9 @@ const features: Feature[] = [
   {
     icon: "/icons/bug_basic.svg",
     hoverIcon: "/icons/bug_hover.svg",
+    iconSize: 110,
+    hoverIconSize: 110,
+    frameMs: 200,
     title: "Bug Quiz",
     description: "Find your spirit bug and recipes that match your comfort level.",
     href: "/quiz",
@@ -26,6 +32,9 @@ const features: Feature[] = [
   {
     icon: "/icons/bug_worldmap.svg",
     hoverIcon: "/icons/bug_worldmap_hover.svg",
+    iconSize: 110,
+    hoverIconSize: 148,
+    frameMs: 420,
     title: "World Map",
     description: "Explore how cultures worldwide have eaten insects for centuries.",
     href: "/map",
@@ -34,6 +43,9 @@ const features: Feature[] = [
   {
     icon: "/icons/bug_cooking.svg",
     hoverIcon: "/icons/bug_cooking_hover.svg",
+    iconSize: 110,
+    hoverIconSize: 110,
+    frameMs: 380,
     title: "Bug Kitchen",
     description: "Cook recipes tailored to your taste — from cricket flour to whole roasted.",
     href: "/kitchen",
@@ -45,17 +57,17 @@ function FeatureCard({ feature, delay }: { feature: Feature; delay: number }) {
   const [hovered, setHovered] = useState(false);
   const [frame, setFrame] = useState(0);
 
-  // 2-frame sprite animation
   useEffect(() => {
     if (!hovered) {
       setFrame(0);
       return;
     }
-    const interval = setInterval(() => setFrame((f) => (f === 0 ? 1 : 0)), 200);
+    const interval = setInterval(() => setFrame((f) => (f === 0 ? 1 : 0)), feature.frameMs);
     return () => clearInterval(interval);
-  }, [hovered]);
+  }, [hovered, feature.frameMs]);
 
   const currentIcon = frame === 1 ? feature.hoverIcon : feature.icon;
+  const displaySize = frame === 1 ? feature.hoverIconSize : feature.iconSize;
 
   return (
     <motion.div
@@ -74,8 +86,8 @@ function FeatureCard({ feature, delay }: { feature: Feature; delay: number }) {
           <Image
             src={currentIcon}
             alt={feature.title}
-            width={110}
-            height={110}
+            width={displaySize}
+            height={displaySize}
             className="object-contain drop-shadow-sm"
           />
         </div>
