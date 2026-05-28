@@ -54,8 +54,8 @@ export default function QuizQuestionCard({
               whileTap={{ scale: 0.98 }}
               className={`rounded-2xl p-5 text-left transition-all shadow-sm border-2 ${
                 isSelected
-                  ? "bg-[#48BB78] text-white border-[#48BB78] shadow-md"
-                  : "bg-white text-[#1A3A2A] border-transparent hover:border-[#48BB78]/40 hover:shadow-lg"
+                  ? "bg-[#2A7D50]/10 text-[#0D2B19] border-[#2A7D50]"
+                  : "bg-white text-[#0D2B19] border-transparent hover:border-[#2A7D50]/40 hover:shadow-lg"
               }`}
             >
               <div className="flex items-center gap-4">
@@ -74,7 +74,7 @@ export default function QuizQuestionCard({
         {onBack ? (
           <button
             onClick={onBack}
-            className="text-[#1A3A2A]/60 hover:text-[#1A3A2A] font-semibold px-5 py-2.5 rounded-full text-sm transition-colors"
+            className="text-[#0D2B19]/60 hover:text-[#0D2B19] font-semibold px-5 py-2.5 rounded-full text-sm transition-colors"
           >
             ← Back
           </button>
@@ -86,10 +86,10 @@ export default function QuizQuestionCard({
           disabled={!selected}
           whileHover={selected ? { scale: 1.03 } : undefined}
           whileTap={selected ? { scale: 0.97 } : undefined}
-          className={`font-bold px-8 py-3 rounded-full text-sm transition-all ${
+          className={`font-bold px-8 py-3 rounded-[10px] text-sm transition-all ${
             selected
-              ? "bg-[#1A3A2A] hover:bg-[#48BB78] text-[#F0FFF4] shadow-sm hover:shadow-lg"
-              : "bg-[#1A3A2A]/10 text-[#1A3A2A]/30 cursor-not-allowed"
+              ? "bg-[#2A7D50] hover:bg-[#1F6040] text-white shadow-sm hover:shadow-lg"
+              : "bg-[#0D2B19]/10 text-[#0D2B19]/30 cursor-not-allowed"
           }`}
         >
           Next →
