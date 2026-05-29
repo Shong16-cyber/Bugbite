@@ -22,11 +22,33 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bugbite-sigma.vercel.app"),
   title: "BugBite - From Fear to Fork",
   description: "A gamified journey from insect-phobia to insect-foodie",
   icons: {
     icon: [{ url: "/icon.png", type: "image/png" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  openGraph: {
+    title: "BugBite - From Fear to Fork",
+    description: "A gamified journey from insect-phobia to insect-foodie",
+    url: "https://bugbite-sigma.vercel.app",
+    siteName: "BugBite",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 1200,
+        alt: "BugBite",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BugBite - From Fear to Fork",
+    description: "A gamified journey from insect-phobia to insect-foodie",
+    images: ["/og-image.png"],
   },
 };
 
