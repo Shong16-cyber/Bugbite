@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   description: "A gamified journey from insect-phobia to insect-foodie",
   icons: {
     icon: [{ url: "/icon.png", type: "image/png" }],
-    apple: [{ url: "/icons/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
