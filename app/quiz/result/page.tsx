@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { QuizAnswers } from "@/lib/quizQuestions";
@@ -45,6 +46,7 @@ function QuizResultContent() {
         id: matched.id,
         name: matched.name,
         emoji: matched.emoji,
+        illustration: matched.illustration,
         tagline: matched.tagline,
         accentColor: matched.accentColor,
       }));
@@ -87,7 +89,7 @@ function QuizResultContent() {
       {isShared && (
         <div className="bg-[#FEFCBF] rounded-2xl px-4 py-3 mb-6 text-center">
           <p className="text-sm text-[#0D2B19]/70">
-            Someone shared their bug persona with you! 🐛{" "}
+            Someone shared their bug persona with you.{" "}
             <Link href="/quiz" className="font-semibold text-[#0D2B19] underline underline-offset-2">
               Take the quiz yourself →
             </Link>
@@ -106,12 +108,19 @@ function QuizResultContent() {
           Your Bug Persona
         </p>
         <motion.div
-          className="w-24 h-24 rounded-3xl flex items-center justify-center text-6xl mb-5 mx-auto shadow-sm"
+          className="w-32 h-32 rounded-3xl flex items-center justify-center mb-5 mx-auto shadow-sm overflow-hidden border border-[#C8E2D4]"
           style={{ backgroundColor: persona.accentColor }}
           animate={{ rotate: [0, -5, 5, -5, 0] }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          {persona.emoji}
+          <Image
+            src={persona.illustration}
+            alt=""
+            width={128}
+            height={128}
+            className="h-32 w-32 object-contain"
+            priority
+          />
         </motion.div>
         <h1 className="text-4xl md:text-5xl font-extrabold text-[#0D2B19] tracking-tight mb-2">
           {persona.name}
@@ -139,7 +148,7 @@ function QuizResultContent() {
             </li>
           ))}
         </ul>
-        <p className="text-xs text-[#0D2B19]/50 italic border-t border-[#0D2B19]/5 pt-3">
+        <p className="text-xs text-[#0D2B19]/50 border-t border-[#0D2B19]/5 pt-3">
           {persona.edibility}
         </p>
       </motion.section>
@@ -169,7 +178,15 @@ function QuizResultContent() {
                 href={`/kitchen/recipe/${recipe.id}`}
                 className="block bg-white rounded-2xl p-4 h-full transition-all hover:-translate-y-1 hover:shadow-lg shadow-sm"
               >
-                <div className="text-3xl mb-2">{recipe.emoji}</div>
+                <div className="bg-[#EEF7F2] rounded-xl border border-[#C8E2D4] h-24 mb-3 overflow-hidden">
+                  <Image
+                    src={recipe.illustration}
+                    alt=""
+                    width={640}
+                    height={192}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
                 <h3 className="font-bold text-[#0D2B19] mb-1.5 leading-tight text-sm">
                   {recipe.name}
                 </h3>
