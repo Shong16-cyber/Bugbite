@@ -2,6 +2,7 @@ export type Persona = {
   id: string;
   name: string;
   emoji: string;
+  illustration: string;
   tagline: string;
   description: string;
   funFacts: string[];
@@ -14,6 +15,7 @@ export const personas: Persona[] = [
     id: "cricket_curious",
     name: "The Cricket Curious",
     emoji: "🦗",
+    illustration: "/illustrations/personas/cricket-curious.png",
     tagline: "Open-minded with a side of crunch.",
     description:
       "You're curious but grounded. Not the first to try, not the last either. You'll happily try a cricket if it's seasoned well.",
@@ -29,6 +31,7 @@ export const personas: Persona[] = [
     id: "cautious_caterpillar",
     name: "The Cautious Caterpillar",
     emoji: "🐛",
+    illustration: "/illustrations/personas/cautious-caterpillar.png",
     tagline: "Slow and steady. You'll get there.",
     description:
       "Bugs aren't your thing — yet. You'd rather start with something that doesn't look like a bug at all. Cricket flour pancake? Sure. Whole roasted scorpion? Hard pass.",
@@ -44,6 +47,7 @@ export const personas: Persona[] = [
     id: "bold_beetle",
     name: "The Bold Beetle",
     emoji: "🪲",
+    illustration: "/illustrations/personas/bold-beetle.png",
     tagline: "Bring on the weird stuff.",
     description:
       "You're an adventurer. You'd order the scorpion lollipop just for the story. You see a new ingredient and think 'how do I cook this?'",
@@ -59,6 +63,7 @@ export const personas: Persona[] = [
     id: "lazy_ladybug",
     name: "The Lazy Ladybug",
     emoji: "🐞",
+    illustration: "/illustrations/personas/lazy-ladybug.png",
     tagline: "If it takes more than 5 minutes, nope.",
     description:
       "Effort? Minimal. You want something you can grab, blend, or open from a bag. Bonus points if you can eat it standing at the counter.",
@@ -74,6 +79,7 @@ export const personas: Persona[] = [
     id: "butterfly_foodie",
     name: "The Butterfly Foodie",
     emoji: "🦋",
+    illustration: "/illustrations/personas/butterfly-foodie.png",
     tagline: "Flavor is everything.",
     description:
       "You don't care what the ingredient is — you care how it tastes. Bold spices, layered flavors, umami bombs. If a bug can deliver that, you're in.",
@@ -89,6 +95,7 @@ export const personas: Persona[] = [
     id: "bee_snacker",
     name: "The Bee Snacker",
     emoji: "🐝",
+    illustration: "/illustrations/personas/bee-snacker.png",
     tagline: "Sweet first, brave later.",
     description:
       "You like your food sweet, light, and not too challenging. A cricket-flour cookie? Adorable. A whole insect on a plate? Maybe in 2027.",

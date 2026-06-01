@@ -2,6 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { recipes, buildPickedReason } from "@/lib/recipes";
@@ -17,6 +18,13 @@ const foodFormColors: Record<string, string> = {
   pieces: "bg-[#D8B4FE] text-[#0D2B19]",
   powder: "bg-[#BFDBFE] text-[#0D2B19]",
   invisible: "bg-[#E5E7EB] text-[#0D2B19]",
+};
+
+const foodFormLabels: Record<string, string> = {
+  whole: "Whole bug",
+  pieces: "Bug pieces",
+  powder: "Flour",
+  invisible: "Hidden",
 };
 
 export default function RecipeDetailPage() {
@@ -50,7 +58,7 @@ export default function RecipeDetailPage() {
   const pickedReason = quizAnswers ? buildPickedReason(recipe, quizAnswers) : null;
 
   return (
-    <main className="px-6 py-10 max-w-2xl mx-auto">
+    <main className="px-6 py-10 max-w-3xl mx-auto">
       <Link
         href="/kitchen"
         className="text-sm text-[#2A7D50] font-semibold mb-6 inline-block hover:opacity-70 transition-opacity"
@@ -64,8 +72,18 @@ export default function RecipeDetailPage() {
         transition={{ duration: 0.5 }}
       >
         {/* Header */}
-        <div className="bg-white rounded-3xl p-8 shadow-sm mb-4">
-          <div className="text-6xl mb-4">{recipe.emoji}</div>
+        <div className="bg-white rounded-3xl overflow-hidden shadow-sm mb-4">
+          <div className="bg-[#EEF7F2] border-b border-[#C8E2D4] overflow-hidden h-48 sm:h-64">
+            <Image
+              src={recipe.illustration}
+              alt=""
+              width={1024}
+              height={439}
+              className="w-full h-full object-cover"
+              priority
+            />
+          </div>
+          <div className="p-8">
           <h1 className="text-3xl font-extrabold text-[#0D2B19] tracking-tight mb-2">
             {recipe.name}
           </h1>
@@ -88,7 +106,7 @@ export default function RecipeDetailPage() {
               {recipe.difficulty}
             </span>
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${foodFormColors[recipe.foodForm]}`}>
-              {recipe.foodForm}
+              {foodFormLabels[recipe.foodForm] ?? recipe.foodForm}
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#FAFFF7] text-[#0D2B19]/70">
               {recipe.insect}
@@ -99,6 +117,7 @@ export default function RecipeDetailPage() {
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#FAFFF7] text-[#0D2B19]/70">
               {recipe.texture}
             </span>
+          </div>
           </div>
         </div>
 
@@ -124,16 +143,62 @@ export default function RecipeDetailPage() {
               <h2 className="text-xs font-semibold tracking-[0.15em] uppercase text-[#2A7D50] mb-4">
                 Steps
               </h2>
-              <ol className="space-y-4">
-                {recipe.steps.map((step, i) => (
-                  <li key={i} className="flex gap-4 text-sm text-[#0D2B19]/80">
-                    <span className="w-6 h-6 rounded-full bg-[#C6F6D5] text-[#0D2B19] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
-                      {i + 1}
-                    </span>
-                    <span className="leading-relaxed">{step}</span>
-                  </li>
-                ))}
-              </ol>
+              <div className={recipe.stepsIllustration ? "flex flex-col md:flex-row md:gap-8 gap-6" : ""}>
+                {recipe.stepsIllustration && (
+                  <div className="rounded-2xl overflow-hidden border border-[#C8E2D4] bg-[#FAFFF7] flex items-center justify-center md:w-[320px] md:flex-shrink-0">
+                    <Image
+                      src={recipe.stepsIllustration}
+                      alt={`${recipe.name} step-by-step illustration`}
+                      width={576}
+                      height={
+                        recipe.stepsSectionRatios &&
+                        recipe.stepsSectionRatios.length === recipe.steps.length
+                          ? recipe.stepsSectionRatios.reduce((a, b) => a + b, 0)
+                          : 1024
+                      }
+                      className="w-full h-auto object-contain"
+                    />
+                  </div>
+                )}
+                {recipe.stepsIllustration ? (() => {
+                  const ratios =
+                    recipe.stepsSectionRatios &&
+                    recipe.stepsSectionRatios.length === recipe.steps.length
+                      ? recipe.stepsSectionRatios
+                      : recipe.steps.map(() => 1);
+                  const total = ratios.reduce((a, b) => a + b, 0);
+                  let acc = 0;
+                  const topPercents = ratios.map((r) => {
+                    const pct = (acc / total) * 100;
+                    acc += r;
+                    return pct;
+                  });
+                  return (
+                    <ol className="flex-1 flex flex-col gap-4 md:gap-0 md:relative md:block">
+                      {recipe.steps.map((step, i) => (
+                        <li
+                          key={i}
+                          style={{ "--md-top": `${topPercents[i]}%` } as React.CSSProperties}
+                          className="text-sm text-[#0D2B19]/80 leading-relaxed text-pretty md:absolute md:left-0 md:right-0 md:top-[var(--md-top)] md:pt-2"
+                        >
+                          {step}
+                        </li>
+                      ))}
+                    </ol>
+                  );
+                })() : (
+                  <ol className="flex-1 space-y-4">
+                    {recipe.steps.map((step, i) => (
+                      <li key={i} className="flex gap-4 text-sm text-[#0D2B19]/80">
+                        <span className="w-6 h-6 rounded-full bg-[#C6F6D5] text-[#0D2B19] font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                          {i + 1}
+                        </span>
+                        <span className="leading-relaxed text-pretty">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
             </div>
 
             {/* Nutrition */}
@@ -160,7 +225,7 @@ export default function RecipeDetailPage() {
           </>
         ) : (
           <div className="bg-white rounded-3xl p-6 shadow-sm mb-6">
-            <p className="text-sm text-[#0D2B19]/50 italic text-center">
+            <p className="text-sm text-[#0D2B19]/50 text-center">
               Full recipe details coming soon.
             </p>
           </div>

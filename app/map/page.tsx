@@ -18,185 +18,211 @@ export default function MapPage() {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [mapCenter, setMapCenter] = useState<[number, number]>([20, 10]);
-  const [mapZoom, setMapZoom] = useState(1);
+  const [mapZoom, setMapZoom] = useState(1.4);
 
   const MIN_ZOOM = 1;
   const MAX_ZOOM = 8;
 
   const openPin = (pin: MapPin) => {
     setSelectedPin(pin);
-    setMapCenter(pin.coordinates);
-    setMapZoom(4);
+    // Zoom in on the pin. Offset center east by ~15° so the pin sits in the
+    // left half of the map, clear of the 420px right-side detail panel.
+    setMapCenter([pin.coordinates[0] + 15, pin.coordinates[1]]);
+    setMapZoom(3);
   };
 
   const closePin = () => {
     setSelectedPin(null);
     setMapCenter([20, 10]);
-    setMapZoom(1);
+    setMapZoom(1.4);
   };
 
   const zoomIn = () => setMapZoom((z) => Math.min(z * 2, MAX_ZOOM));
   const zoomOut = () => setMapZoom((z) => Math.max(z / 2, MIN_ZOOM));
   const resetZoom = () => {
     setMapCenter([20, 10]);
-    setMapZoom(1);
+    setMapZoom(1.4);
   };
 
   return (
     <div className="relative">
-      {/* Header */}
-      <div className="max-w-5xl mx-auto px-6 pt-8 pb-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
-        <Image
-          src="/icons/bug_worldmap.svg"
-          alt=""
-          width={88}
-          height={88}
-          className="object-contain flex-shrink-0 drop-shadow-sm"
-        />
-        <div>
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#2A7D50] mb-2">
-            Cultural World Map
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0D2B19] tracking-tight mb-1">
-            Bugs on the Menu
-          </h1>
-          <p className="text-[#0D2B19]/60 text-sm">
-            2 billion people eat insects regularly. Tap a pin to see what&apos;s cooking.
-          </p>
-        </div>
-      </div>
-
-      {/* Map — full viewport width */}
-      <div className="w-full bg-white border-y border-[#C8E2D4] relative overflow-hidden">
-        {loadError ? (
-          <div className="flex flex-col items-center justify-center h-64 text-center px-6">
-            <div className="text-4xl mb-3">🌍</div>
+      <section className="h-[calc(100vh-80px)] sm:h-[calc(100vh-88px)] flex flex-col">
+        {/* Header */}
+        <div className="max-w-5xl mx-auto w-full px-6 pt-10 pb-6 shrink-0 flex items-center gap-6">
+          <Image
+            src="/icons/bug_worldmap.svg"
+            alt=""
+            width={96}
+            height={96}
+            className="object-contain flex-shrink-0 drop-shadow-sm"
+          />
+          <div>
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#2A7D50] mb-2">
+              Cultural World Map
+            </p>
+            <h1 className="text-4xl font-extrabold text-[#0D2B19] tracking-tight mb-1">
+              Bugs on the Menu
+            </h1>
             <p className="text-[#0D2B19]/60 text-sm">
-              Map couldn&apos;t load. Check your connection and try again.
+              2 billion people eat insects regularly. Tap a pin to see what&apos;s cooking.
             </p>
           </div>
-        ) : (
-          <>
-            <ComposableMap
-              projection="geoMercator"
-              projectionConfig={{ scale: 160, center: [20, 10] }}
-              style={{ width: "100%", height: "auto" }}
-              className="h-[260px] sm:h-[400px] md:h-[520px]"
-            >
-              <ZoomableGroup
-                center={mapCenter}
-                zoom={mapZoom}
-                onMoveEnd={({ coordinates, zoom }: { coordinates: [number, number]; zoom: number }) => {
-                  setMapCenter(coordinates);
-                  setMapZoom(zoom);
-                }}
-              >
-                <Geographies geography={GEO_URL}>
-                  {({ geographies }: { geographies: { rsmKey: string }[] }) =>
-                    geographies.map((geo) => (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        fill="#C6F6D5"
-                        stroke="#FAFFF7"
-                        strokeWidth={0.5}
-                        style={{
-                          default: { outline: "none" },
-                          hover: { fill: "#9AE6B4", outline: "none" },
-                          pressed: { outline: "none" },
-                        }}
-                      />
-                    ))
-                  }
-                </Geographies>
+        </div>
 
-                {mapPins.map((pin) => (
-                  <Marker
-                    key={pin.id}
-                    coordinates={pin.coordinates}
-                    onClick={() => openPin(pin)}
-                  >
-                    <motion.g
-                      whileHover={{ scale: 1.3 }}
-                      whileTap={{ scale: 0.95 }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <circle
-                        r={10}
-                        fill={selectedPin?.id === pin.id ? "#0D2B19" : "white"}
-                        stroke="#2A7D50"
-                        strokeWidth={2}
-                      />
-                      <text
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        fontSize={10}
-                      >
-                        {pin.emoji}
-                      </text>
-                    </motion.g>
-                  </Marker>
-                ))}
-              </ZoomableGroup>
-            </ComposableMap>
-            {/* Zoom controls */}
-            <div className="absolute bottom-8 right-4 flex flex-col gap-1">
-              <motion.button
-                onClick={zoomIn}
-                disabled={mapZoom >= MAX_ZOOM}
-                whileTap={{ scale: 0.9 }}
-                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-lg font-bold hover:bg-[#EEF7F2] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                aria-label="Zoom in"
-              >
-                +
-              </motion.button>
-              <motion.button
-                onClick={zoomOut}
-                disabled={mapZoom <= MIN_ZOOM}
-                whileTap={{ scale: 0.9 }}
-                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-lg font-bold hover:bg-[#EEF7F2] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                aria-label="Zoom out"
-              >
-                −
-              </motion.button>
-              {mapZoom > 1 && (
-                <motion.button
-                  onClick={resetZoom}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-[10px] font-semibold hover:bg-[#EEF7F2] transition-colors"
-                  aria-label="Reset zoom"
-                >
-                  ⌂
-                </motion.button>
-              )}
+        {/* Map — fills the rest of the first screen */}
+        <div className="w-full flex-1 min-h-[360px] bg-[#F4FAF7] border-y border-[#C8E2D4] relative overflow-hidden flex flex-col">
+          {loadError ? (
+            <div className="flex flex-col items-center justify-center flex-1 text-center px-6">
+              <div className="text-4xl mb-3">🌍</div>
+              <p className="text-[#0D2B19]/60 text-sm">
+                Map couldn&apos;t load. Check your connection and try again.
+              </p>
             </div>
+          ) : (
+            <>
+              <div className="relative flex-1 min-h-0">
+                <ComposableMap
+                  projection="geoMercator"
+                  projectionConfig={{ scale: 160, center: [20, 10] }}
+                  style={{ width: "100%", height: "100%" }}
+                >
+                  <ZoomableGroup
+                    center={mapCenter}
+                    zoom={mapZoom}
+                    onMoveEnd={({ coordinates, zoom }: { coordinates: [number, number]; zoom: number }) => {
+                      setMapCenter(coordinates);
+                      setMapZoom(zoom);
+                    }}
+                  >
+                    <Geographies geography={GEO_URL}>
+                      {({ geographies }: { geographies: { rsmKey: string }[] }) =>
+                        geographies.map((geo) => (
+                          <Geography
+                            key={geo.rsmKey}
+                            geography={geo}
+                            fill="#C6F6D5"
+                            stroke="#FAFFF7"
+                            strokeWidth={0.5}
+                            style={{
+                              default: { outline: "none" },
+                              hover: { fill: "#9AE6B4", outline: "none" },
+                              pressed: { outline: "none" },
+                            }}
+                          />
+                        ))
+                      }
+                    </Geographies>
 
-            <p className="text-[10px] text-[#0D2B19]/30 text-center py-2">
-              <span className="hidden sm:inline">Scroll to zoom · Drag to pan · </span>
-              Tap a pin to explore
-            </p>
-          </>
-        )}
+                    {[...mapPins]
+                      .sort((a, b) => {
+                        // Render the selected pin last so its enlarged circle
+                        // paints on top of its neighbors.
+                        if (selectedPin?.id === a.id) return 1;
+                        if (selectedPin?.id === b.id) return -1;
+                        return 0;
+                      })
+                      .map((pin) => {
+                      const clipId = `pin-clip-${pin.id}`;
+                      const isSelected = selectedPin?.id === pin.id;
 
-        {/* Desktop side panel — slides in from right */}
-        <AnimatePresence>
-          {selectedPin && (
-            <motion.div
-              key={`desktop-${selectedPin.id}`}
-              initial={{ x: "100%", opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: "100%", opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="hidden sm:flex absolute top-0 right-0 h-full w-[340px] bg-[#FAFFF7]/95 backdrop-blur-md border-l border-[#C8E2D4] shadow-xl flex-col"
-            >
-              <PinDetail pin={selectedPin} onClose={closePin} />
-            </motion.div>
+                      return (
+                        <Marker
+                          key={pin.id}
+                          coordinates={pin.coordinates}
+                          onClick={() => openPin(pin)}
+                        >
+                          <motion.g
+                            animate={{ scale: isSelected ? 1.9 : 1 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                            whileHover={{ scale: isSelected ? 2 : 1.18 }}
+                            whileTap={{ scale: isSelected ? 1.8 : 0.95 }}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <defs>
+                              <clipPath id={clipId}>
+                                <circle r={16} cx={0} cy={0} />
+                              </clipPath>
+                            </defs>
+                            <circle
+                              r={18}
+                              fill={isSelected ? "#0D2B19" : "#2A7D50"}
+                            />
+                            <circle r={16} fill="white" />
+                            <image
+                              href={pin.illustration}
+                              x={-16}
+                              y={-16}
+                              width={32}
+                              height={32}
+                              clipPath={`url(#${clipId})`}
+                              preserveAspectRatio="xMidYMid meet"
+                            />
+                          </motion.g>
+                        </Marker>
+                      );
+                    })}
+                  </ZoomableGroup>
+                </ComposableMap>
+                {/* Zoom controls */}
+                <div className="absolute bottom-4 right-4 flex flex-col gap-1">
+                  <motion.button
+                    onClick={zoomIn}
+                    disabled={mapZoom >= MAX_ZOOM}
+                    whileTap={{ scale: 0.9 }}
+                    className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-lg font-bold hover:bg-[#EEF7F2] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    aria-label="Zoom in"
+                  >
+                    +
+                  </motion.button>
+                  <motion.button
+                    onClick={zoomOut}
+                    disabled={mapZoom <= MIN_ZOOM}
+                    whileTap={{ scale: 0.9 }}
+                    className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-lg font-bold hover:bg-[#EEF7F2] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    aria-label="Zoom out"
+                  >
+                    −
+                  </motion.button>
+                  {mapZoom > 1 && (
+                    <motion.button
+                      onClick={resetZoom}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-[#C8E2D4] shadow-sm text-[#0D2B19] text-[10px] font-semibold hover:bg-[#EEF7F2] transition-colors"
+                      aria-label="Reset zoom"
+                    >
+                      ⌂
+                    </motion.button>
+                  )}
+                </div>
+              </div>
+
+              <p className="shrink-0 text-[10px] text-[#0D2B19]/30 text-center py-2">
+                <span className="hidden sm:inline">Scroll to zoom · Drag to pan · </span>
+                Tap a pin to explore
+              </p>
+            </>
           )}
-        </AnimatePresence>
-      </div>
+
+          {/* Desktop side panel — slides in from right */}
+          <AnimatePresence>
+            {selectedPin && (
+              <motion.div
+                key={`desktop-${selectedPin.id}`}
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "100%", opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="hidden sm:flex absolute top-0 right-0 h-full w-[500px] bg-[#FAFFF7]/95 backdrop-blur-md border-l border-[#C8E2D4] shadow-xl flex-col overflow-y-auto"
+              >
+                <PinDetail pin={selectedPin} onClose={closePin} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
 
       {/* Mobile bottom sheet — rendered outside map div so it can be fixed */}
       <AnimatePresence>
@@ -247,7 +273,13 @@ export default function MapPage() {
                   : "border-[#C8E2D4]"
               }`}
             >
-              <div className="text-2xl mb-2">{pin.emoji}</div>
+              <Image
+                src={pin.illustration}
+                alt=""
+                width={56}
+                height={56}
+                className="mb-2 h-14 w-14 object-contain"
+              />
               <p className="text-sm font-bold text-[#0D2B19] leading-tight mb-0.5">
                 {pin.dish}
               </p>
@@ -262,19 +294,25 @@ export default function MapPage() {
 
 function PinDetail({ pin, onClose }: { pin: MapPin; onClose: () => void }) {
   return (
-    <div className="p-6 flex flex-col gap-4">
+    <div className="p-6 flex flex-col gap-4 h-full">
       {/* Close */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#0D2B19]/10 hover:bg-[#0D2B19]/20 text-[#0D2B19] text-lg font-bold transition-colors"
+        className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#0D2B19]/10 hover:bg-[#0D2B19]/20 text-[#0D2B19] text-lg font-bold transition-colors z-10"
       >
         ×
       </button>
 
       {/* Icon + region + title */}
-      <div className="flex items-center gap-4 pt-2 pr-10">
-        <div className="w-16 h-16 rounded-2xl bg-[#EEF7F2] flex items-center justify-center text-4xl flex-shrink-0">
-          {pin.emoji}
+      <div className="flex items-center gap-4 pr-10">
+        <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center flex-shrink-0 overflow-hidden border border-[#C8E2D4]">
+          <Image
+            src={pin.illustration}
+            alt=""
+            width={72}
+            height={72}
+            className="h-14 w-14 object-contain"
+          />
         </div>
         <div>
           <p className="text-xs font-semibold tracking-[0.15em] uppercase text-[#2A7D50] mb-0.5">
@@ -292,7 +330,7 @@ function PinDetail({ pin, onClose }: { pin: MapPin; onClose: () => void }) {
         {pin.description}
       </p>
 
-      {/* Cultural context */}
+      {/* Cultural context — text only */}
       <div className="bg-white border border-[#C8E2D4] rounded-xl px-4 py-3">
         <p className="text-xs font-semibold text-[#2A7D50] uppercase tracking-wider mb-1">
           Cultural Context
@@ -300,6 +338,18 @@ function PinDetail({ pin, onClose }: { pin: MapPin; onClose: () => void }) {
         <p className="text-xs text-[#0D2B19]/70 leading-relaxed">
           {pin.culturalContext}
         </p>
+      </div>
+
+      {/* Scene illustration — fills the entire remaining area edge-to-edge */}
+      <div className="-mx-6 -mb-6 flex-1 min-h-0 overflow-hidden border-t border-[#C8E2D4] bg-white">
+        <Image
+          src={pin.sceneIllustration}
+          alt=""
+          width={840}
+          height={840}
+          className="w-full h-full object-cover"
+          priority
+        />
       </div>
     </div>
   );
