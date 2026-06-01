@@ -40,7 +40,7 @@ export default function QuizQuestionCard({
       <h2 className="text-3xl md:text-4xl font-extrabold text-[#0D2B19] tracking-tight mb-8 text-center leading-tight">
         {question.question}
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-28 sm:mb-8">
         {question.options.map((option, i) => {
           const isSelected = selected === option.value;
           return (
@@ -69,8 +69,8 @@ export default function QuizQuestionCard({
         })}
       </div>
 
-      {/* Navigation: Back + Next */}
-      <div className="flex justify-between items-center gap-3">
+      {/* Navigation: fixed bottom on mobile, inline on desktop */}
+      <div className="fixed bottom-0 left-0 right-0 z-10 flex justify-between items-center gap-3 bg-[#FAFFF7] border-t border-[#C8E2D4] px-6 py-4 sm:static sm:bg-transparent sm:border-0 sm:px-0 sm:py-0">
         {onBack ? (
           <button
             onClick={onBack}
