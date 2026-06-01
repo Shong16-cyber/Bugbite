@@ -6,6 +6,8 @@ export type MapPin = {
   dish: string;
   insect: string;
   emoji: string;
+  illustration: string;
+  sceneIllustration: string;
   description: string;
   culturalContext: string;
 };
@@ -19,6 +21,8 @@ export const mapPins: MapPin[] = [
     dish: "Chapulines",
     insect: "Grasshopper",
     emoji: "🦗",
+    illustration: "/illustrations/map/chapulines.png",
+    sceneIllustration: "/illustrations/scenes/oaxaca-market.png",
     description:
       "Chapulines are toasted grasshoppers seasoned with lime, chili, garlic, and salt. Crunchy, tangy, and wildly addictive — often served in tacos or eaten as a snack.",
     culturalContext:
@@ -32,6 +36,8 @@ export const mapPins: MapPin[] = [
     dish: "Jing Leed",
     insect: "Cricket",
     emoji: "🦗",
+    illustration: "/illustrations/map/jing-leed.png",
+    sceneIllustration: "/illustrations/scenes/thailand-night-market.png",
     description:
       "Jing Leed are deep-fried crickets seasoned with Thai herbs and spices. Crispy on the outside, soft inside — a beloved street snack found on almost every night market cart.",
     culturalContext:
@@ -45,6 +51,8 @@ export const mapPins: MapPin[] = [
     dish: "Beondegi",
     insect: "Silkworm pupa",
     emoji: "🐛",
+    illustration: "/illustrations/map/beondegi.png",
+    sceneIllustration: "/illustrations/scenes/seoul-street-cup.png",
     description:
       "Beondegi are steamed or boiled silkworm pupae, sold in paper cups at street stalls and pojangmacha (street food tents). Chewy, savory, with a distinctive earthy flavor.",
     culturalContext:
@@ -58,6 +66,8 @@ export const mapPins: MapPin[] = [
     dish: "Mopane Worms",
     insect: "Mopane caterpillar",
     emoji: "🐛",
+    illustration: "/illustrations/map/mopane-worm.png",
+    sceneIllustration: "/illustrations/scenes/mopane-stew.png",
     description:
       "Mopane worms are the caterpillars of the Emperor moth, harvested from mopane trees. They're dried or smoked and cooked with tomatoes, onions, and spices into a rich stew.",
     culturalContext:
@@ -71,6 +81,8 @@ export const mapPins: MapPin[] = [
     dish: "Inago no Tsukudani",
     insect: "Grasshopper",
     emoji: "🦗",
+    illustration: "/illustrations/map/inago.png",
+    sceneIllustration: "/illustrations/scenes/nagano-rice-bowl.png",
     description:
       "Inago are rice field grasshoppers simmered in soy sauce, sugar, and mirin until glazed and sticky. Sweet, savory, and chewy — typically eaten over rice or as a side dish.",
     culturalContext:
@@ -84,6 +96,8 @@ export const mapPins: MapPin[] = [
     dish: "Hormiga Culona",
     insect: "Leafcutter ant",
     emoji: "🐜",
+    illustration: "/illustrations/map/hormiga-culona.png",
+    sceneIllustration: "/illustrations/scenes/santander-ant-stall.png",
     description:
       "Hormiga culona — literally 'big-butt ant' — are leafcutter ant queens, toasted in salt. Nutty and crunchy, they've been compared to popcorn or salted peanuts.",
     culturalContext:
@@ -97,6 +111,8 @@ export const mapPins: MapPin[] = [
     dish: "A-ping",
     insect: "Tarantula",
     emoji: "🕷️",
+    illustration: "/illustrations/map/a-ping.png",
+    sceneIllustration: "/illustrations/scenes/cambodia-tarantula-tray.png",
     description:
       "A-ping are fried tarantulas, crispy on the outside and soft inside. Seasoned with salt, sugar, and garlic — they taste a bit like soft-shell crab with a mild, earthy flavor.",
     culturalContext:
@@ -110,6 +126,8 @@ export const mapPins: MapPin[] = [
     dish: "Witchetty Grub",
     insect: "Witchetty moth larva",
     emoji: "🐛",
+    illustration: "/illustrations/map/witchetty-grub.png",
+    sceneIllustration: "/illustrations/scenes/australia-grub-ground.png",
     description:
       "Witchetty grubs are large white larvae eaten raw or lightly cooked in coals. Raw, they taste like almonds; cooked, the skin crisps up and the inside becomes rich and egg-like.",
     culturalContext:
@@ -123,6 +141,8 @@ export const mapPins: MapPin[] = [
     dish: "Shea Caterpillars",
     insect: "Shea caterpillar",
     emoji: "🐛",
+    illustration: "/illustrations/map/shea-caterpillar.png",
+    sceneIllustration: "/illustrations/scenes/ghana-caterpillar-market.png",
     description:
       "Shea caterpillars are harvested from shea trees, dried, and fried or added to soups and stews. They have a rich, smoky flavor and a satisfying chewy texture.",
     culturalContext:
@@ -136,6 +156,8 @@ export const mapPins: MapPin[] = [
     dish: "Insect Burgers",
     insect: "Mealworm / Buffalo worm",
     emoji: "🍔",
+    illustration: "/illustrations/map/insect-burger.png",
+    sceneIllustration: "/illustrations/scenes/dutch-insect-burger-lab.png",
     description:
       "The Netherlands is a global leader in insect food innovation. Mealworm and buffalo worm burgers, sold in supermarkets, taste like regular veggie burgers — just with better protein.",
     culturalContext:
