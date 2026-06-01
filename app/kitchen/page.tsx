@@ -33,10 +33,18 @@ const foodFormColors: Record<string, string> = {
   invisible: "bg-[#E5E7EB] text-[#0D2B19]",
 };
 
+// Friendly display labels for food-form so users understand at a glance.
+const foodFormLabels: Record<string, string> = {
+  whole: "Whole bug",
+  pieces: "Bug pieces",
+  powder: "Flour",
+  invisible: "Hidden",
+};
+
 export default function KitchenPage() {
   const [quizAnswers, setQuizAnswers] = useState<Record<string, string> | null>(null);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
-  const [persona, setPersona] = useState<{ name: string; emoji: string; tagline: string; accentColor: string } | null>(null);
+  const [persona, setPersona] = useState<{ name: string; emoji: string; illustration: string; tagline: string; accentColor: string } | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
 
@@ -88,7 +96,15 @@ export default function KitchenPage() {
           style={{ backgroundColor: persona.accentColor }}
         >
           <div className="flex items-center gap-3">
-            <span className="text-3xl">{persona.emoji}</span>
+            <div className="w-12 h-12 rounded-xl bg-white/50 border border-[#0D2B19]/10 flex items-center justify-center overflow-hidden">
+              <Image
+                src={persona.illustration || "/illustrations/personas/cricket-curious.png"}
+                alt=""
+                width={48}
+                height={48}
+                className="h-12 w-12 object-contain"
+              />
+            </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-[#0D2B19]/60 mb-0.5">
                 Your Persona
@@ -214,7 +230,7 @@ export default function KitchenPage() {
                               : "bg-white text-[#0D2B19]/60 border-[#C8E2D4] hover:border-[#2A7D50]/50 hover:text-[#0D2B19]"
                           }`}
                         >
-                          {v}
+                          {key === "foodForm" ? foodFormLabels[v] ?? v : v}
                         </button>
                       ))}
                     </div>
@@ -287,42 +303,51 @@ function RecipeCard({
     >
       <Link
         href={`/kitchen/recipe/${recipe.id}`}
-        className="group flex flex-col bg-white border border-[#C8E2D4] rounded-2xl p-5 h-full transition-all hover:-translate-y-1 hover:shadow-md"
+        className="group flex flex-col bg-white border border-[#C8E2D4] rounded-2xl overflow-hidden h-full transition-all hover:-translate-y-1 hover:shadow-md"
       >
-        {/* Top: emoji + difficulty badge */}
-        <div className="flex items-start justify-between mb-3">
-          <span className="text-4xl">{recipe.emoji}</span>
-          <span className={`px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide ${difficultyColors[recipe.difficulty]}`}>
+        {/* Illustration + difficulty badge */}
+        <div className="relative h-32 bg-[#EEF7F2] border-b border-[#C8E2D4] overflow-hidden">
+          <Image
+            src={recipe.illustration}
+            alt=""
+            width={640}
+            height={256}
+            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            priority={index === 0}
+          />
+          <span className={`absolute top-3 right-3 px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide ${difficultyColors[recipe.difficulty]}`}>
             {recipe.difficulty}
           </span>
         </div>
 
-        {/* Title */}
-        <h2 className="font-bold text-[#0D2B19] mb-1.5 leading-tight">
-          {recipe.name}
-        </h2>
+        <div className="flex flex-col flex-1 p-5">
+          {/* Title */}
+          <h2 className="font-bold text-[#0D2B19] mb-1.5 leading-tight">
+            {recipe.name}
+          </h2>
 
-        {/* Desc */}
-        <p className="text-xs text-[#0D2B19]/60 leading-relaxed flex-1">
-          {recipe.shortDesc}
-        </p>
-
-        {matchLabel && (
-          <p className="text-[10px] font-semibold text-[#2A7D50] uppercase tracking-wider mt-2">
-            {matchLabel}
+          {/* Desc */}
+          <p className="text-xs text-[#0D2B19]/60 leading-relaxed flex-1">
+            {recipe.shortDesc}
           </p>
-        )}
 
-        {/* Meta row */}
-        <div className="flex items-center gap-4 mt-4 pt-3 border-t border-[#C8E2D4]">
-          <div className="flex items-baseline gap-1">
-            <span className="font-mono text-sm font-semibold text-[#0D2B19]">{recipe.prepTime}</span>
-            <span className="text-[10px] text-[#0D2B19]/50">prep</span>
+          {matchLabel && (
+            <p className="text-[10px] font-semibold text-[#2A7D50] uppercase tracking-wider mt-2">
+              {matchLabel}
+            </p>
+          )}
+
+          {/* Meta row */}
+          <div className="flex items-center gap-4 mt-4 pt-3 border-t border-[#C8E2D4]">
+            <div className="flex items-baseline gap-1">
+              <span className="font-mono text-sm font-semibold text-[#0D2B19]">{recipe.prepTime}</span>
+              <span className="text-[10px] text-[#0D2B19]/50">prep</span>
+            </div>
+            <div className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${foodFormColors[recipe.foodForm]}`}>
+              {foodFormLabels[recipe.foodForm] ?? recipe.foodForm}
+            </div>
+            <span className="text-[10px] text-[#0D2B19]/50 ml-auto">{recipe.insect}</span>
           </div>
-          <div className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${foodFormColors[recipe.foodForm]}`}>
-            {recipe.foodForm}
-          </div>
-          <span className="text-[10px] text-[#0D2B19]/50 ml-auto">{recipe.insect}</span>
         </div>
       </Link>
     </motion.div>
